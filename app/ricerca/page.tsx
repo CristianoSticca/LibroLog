@@ -24,8 +24,10 @@ export default function Ricerca() {
     setLoading(true);
     setSearched(true);
     try {
+      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY;
+      const keyParam = apiKey ? `&key=${apiKey}` : '';
       const res = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=20&langRestrict=it,en`
+        `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=20&langRestrict=it,en${keyParam}`
       );
       const data = await res.json();
       setResults(data.items || []);
