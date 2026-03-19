@@ -29,7 +29,10 @@ export async function GET(request: NextRequest) {
     if (!error) {
       return NextResponse.redirect(new URL(next, request.url));
     }
+    console.error('[auth/confirm] verifyOtp error:', error.message);
+    return NextResponse.redirect(new URL(`/login?error=${encodeURIComponent(error.message)}`, request.url));
   }
 
+  console.error('[auth/confirm] missing params — token_hash:', token_hash, 'type:', type, 'url:', request.url);
   return NextResponse.redirect(new URL('/login?error=invalid_link', request.url));
 }
