@@ -32,9 +32,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className="min-h-full bg-[#fcf9f4] text-[#1c1c19]">
         <BooksProvider>
           {children}
-          <BottomNav />
+          <BottomNavWrapper />
         </BooksProvider>
       </body>
     </html>
   );
+}
+
+function BottomNavWrapper() {
+  return <BottomNav />;
 }

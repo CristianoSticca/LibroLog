@@ -13,6 +13,8 @@ const TABS = [
 export default function BottomNav() {
   const pathname = usePathname();
 
+  if (pathname === '/login') return null;
+
   return (
     <nav className="fixed bottom-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#fcf9f4]/90 backdrop-blur-xl z-50 rounded-t-3xl shadow-[0px_-12px_32px_rgba(28,28,25,0.05)]">
       {TABS.map(tab => {
