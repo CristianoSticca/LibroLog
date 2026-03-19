@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { useBooks } from '@/context/BooksContext';
+import { useRouter } from 'next/navigation';
 
 export default function Dashboard() {
-  const { books, booksByStatus, loading, user, signOut } = useBooks();
+  const { books, booksByStatus, loading, user } = useBooks();
+  const router = useRouter();
 
   if (loading) {
     return (
@@ -33,18 +35,13 @@ export default function Dashboard() {
     <>
       <header className="fixed top-0 w-full flex justify-between items-center px-6 py-4 bg-[#fcf9f4]/80 backdrop-blur-md z-50">
         <span className="font-serif italic text-2xl text-[#162b1d]">LibroLog</span>
-        <div className="flex items-center gap-2">
-          {user && (
-            <span className="text-xs text-[#74777d] hidden sm:block">{user.email}</span>
-          )}
-          <button
-            onClick={signOut}
-            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#f0ede8] transition-colors"
-            title="Esci"
-          >
-            <span className="material-symbols-outlined text-[#162b1d]">logout</span>
-          </button>
-        </div>
+        <button
+          onClick={() => router.push('/impostazioni')}
+          className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#f0ede8] transition-colors"
+          title="Impostazioni"
+        >
+          <span className="material-symbols-outlined text-[#162b1d]">settings</span>
+        </button>
       </header>
 
       <main className="pt-24 pb-32 px-6 max-w-2xl mx-auto">
