@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" fill="none">
+  <!-- Background -->
+  <rect width="180" height="180" rx="40" fill="#162b1d"/>
+  <!-- Book spine -->
+  <rect x="50" y="38" width="18" height="104" rx="9" fill="#d0e9d4"/>
+  <!-- Book cover -->
+  <rect x="68" y="38" width="62" height="104" rx="6" fill="#fcf9f4"/>
+  <!-- Lines on page -->
+  <rect x="78" y="62" width="42" height="9" rx="4.5" fill="#c4c6cd"/>
+  <rect x="78" y="80" width="42" height="9" rx="4.5" fill="#c4c6cd"/>
+  <rect x="78" y="98" width="30" height="9" rx="4.5" fill="#c4c6cd"/>
+</svg>
