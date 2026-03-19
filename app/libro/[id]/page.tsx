@@ -55,6 +55,7 @@ export default function LibroDetail() {
   const progress = book.pages > 0 ? Math.round((currentPage / book.pages) * 100) : 0;
 
   function handleSave() {
+    if (!book) return;
     const updates: Partial<typeof book> = { currentPage, rating, notes, status, startDate: startDate || undefined, endDate: endDate || undefined };
     if (status === 'read' && currentPage < book.pages && book.pages > 0) {
       updates.currentPage = book.pages;
@@ -83,7 +84,7 @@ export default function LibroDetail() {
     setPageInput(val);
     const n = parseInt(val);
     if (!isNaN(n) && n >= 0) {
-      const capped = book.pages > 0 ? Math.min(n, book.pages) : n;
+      const capped = book && book.pages > 0 ? Math.min(n, book.pages) : n;
       setCurrentPage(capped);
     }
   }
