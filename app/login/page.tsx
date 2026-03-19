@@ -99,14 +99,14 @@ export default function Login() {
             <div className="bg-[#f6f3ee] rounded-2xl p-6 space-y-4">
               <div>
                 <label className="text-xs uppercase tracking-widest text-[#4e6073] block mb-2">
-                  Inserisci il codice a 6 cifre
+                  Inserisci il codice a 8 cifre
                 </label>
                 <input
                   type="text"
                   inputMode="numeric"
                   value={code}
-                  onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                  placeholder="000000"
+                  onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 8))}
+                  placeholder="00000000"
                   required
                   className="w-full px-4 py-3 bg-[#ebe8e3] rounded-xl border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20 text-[#1c1c19] placeholder:text-[#74777d] text-center text-2xl tracking-[0.5em] font-semibold"
                 />
@@ -114,7 +114,7 @@ export default function Login() {
               {error && <p className="text-sm text-[#ba1a1a]">{error}</p>}
               <button
                 type="submit"
-                disabled={loading || code.length < 6}
+                disabled={loading || code.length < 8}
                 className="w-full py-4 bg-[#162b1d] text-white rounded-full font-semibold flex items-center justify-center gap-2 disabled:opacity-50 transition-all active:scale-95"
               >
                 <span className="material-symbols-outlined">login</span>
