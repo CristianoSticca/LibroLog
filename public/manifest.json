@@ -1,0 +1,17 @@
+{
+  "name": "LibroLog",
+  "short_name": "LibroLog",
+  "description": "Il tuo diario di lettura personale",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fcf9f4",
+  "theme_color": "#162b1d",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

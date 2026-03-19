@@ -29,6 +29,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           rel="stylesheet"
         />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="LibroLog" />
+        <meta name="theme-color" content="#162b1d" />
       </head>
       <body className="min-h-full bg-[#fcf9f4] text-[#1c1c19]">
         <BooksProvider>
