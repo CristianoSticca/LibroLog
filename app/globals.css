@@ -1,26 +1,78 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Editorial Sanctuary – Design System */
+  --color-primary: #162b1d;
+  --color-primary-container: #2c4132;
+  --color-primary-fixed: #d0e9d4;
+  --color-primary-fixed-dim: #b4cdb8;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #95ad9a;
+  --color-on-primary-fixed: #0b2013;
+  --color-on-primary-fixed-variant: #364c3c;
+  --color-inverse-primary: #b4cdb8;
+
+  --color-secondary: #4e6073;
+  --color-secondary-container: #cfe2f9;
+  --color-secondary-fixed: #d1e4fb;
+  --color-secondary-fixed-dim: #b5c8df;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #526478;
+  --color-on-secondary-fixed: #091d2e;
+  --color-on-secondary-fixed-variant: #36485b;
+
+  --color-tertiary: #392117;
+  --color-tertiary-container: #52362b;
+  --color-tertiary-fixed: #ffdbce;
+  --color-tertiary-fixed-dim: #e7beae;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #c59f90;
+  --color-on-tertiary-fixed: #2c160c;
+  --color-on-tertiary-fixed-variant: #5d4034;
+
+  --color-surface: #fcf9f4;
+  --color-surface-bright: #fcf9f4;
+  --color-surface-dim: #dcdad5;
+  --color-surface-variant: #e5e2dd;
+  --color-surface-tint: #4d6453;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f6f3ee;
+  --color-surface-container: #f0ede8;
+  --color-surface-container-high: #ebe8e3;
+  --color-surface-container-highest: #e5e2dd;
+
+  --color-on-surface: #1c1c19;
+  --color-on-surface-variant: #43474c;
+  --color-inverse-surface: #31302d;
+  --color-inverse-on-surface: #f3f0eb;
+
+  --color-background: #fcf9f4;
+  --color-on-background: #1c1c19;
+
+  --color-outline: #74777d;
+  --color-outline-variant: #c4c6cd;
+
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+
+  --font-headline: var(--font-headline), "Newsreader", serif;
+  --font-body: var(--font-body), "Manrope", sans-serif;
+  --font-sans: var(--font-body), "Manrope", sans-serif;
+
+  --radius: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #fcf9f4;
+  color: #1c1c19;
+  font-family: "Manrope", sans-serif;
 }
