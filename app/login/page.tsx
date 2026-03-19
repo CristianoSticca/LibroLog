@@ -1,13 +1,16 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
 export default function Login() {
   const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const router = useRouter();
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -28,6 +31,25 @@ export default function Login() {
     setLoading(false);
   }
 
+  async function handleVerify(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    const supabase = createClient();
+    const { error } = await supabase.auth.verifyOtp({
+      email,
+      token: code.trim(),
+      type: 'email',
+    });
+    if (error) {
+      setError('Codice non valido o scaduto.');
+    } else {
+      router.push('/');
+      router.refresh();
+    }
+    setLoading(false);
+  }
+
   return (
     <div className="min-h-screen bg-[#fcf9f4] flex flex-col items-center justify-center px-6">
       <div className="w-full max-w-sm">
@@ -36,16 +58,7 @@ export default function Login() {
           <p className="text-[#4e6073] mt-2 text-sm">Il tuo diario di lettura personale</p>
         </div>
 
-        {sent ? (
-          <div className="bg-[#d0e9d4] rounded-2xl p-8 text-center">
-            <span className="material-symbols-outlined text-4xl text-[#162b1d] mb-3 block">mark_email_read</span>
-            <h2 className="font-serif text-xl text-[#162b1d] mb-2">Controlla la tua email</h2>
-            <p className="text-sm text-[#43474c]">
-              Abbiamo inviato un link di accesso a <strong>{email}</strong>.<br />
-              Clicca il link per entrare.
-            </p>
-          </div>
-        ) : (
+        {!sent ? (
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="bg-[#f6f3ee] rounded-2xl p-6 space-y-4">
               <div>
@@ -61,9 +74,7 @@ export default function Login() {
                   className="w-full px-4 py-3 bg-[#ebe8e3] rounded-xl border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20 text-[#1c1c19] placeholder:text-[#74777d]"
                 />
               </div>
-              {error && (
-                <p className="text-sm text-[#ba1a1a]">{error}</p>
-              )}
+              {error && <p className="text-sm text-[#ba1a1a]">{error}</p>}
               <button
                 type="submit"
                 disabled={loading || !email}
@@ -74,8 +85,49 @@ export default function Login() {
               </button>
             </div>
             <p className="text-center text-xs text-[#74777d]">
-              Riceverai un link magico — nessuna password necessaria.
+              Riceverai un codice di accesso via email — nessuna password necessaria.
             </p>
+          </form>
+        ) : (
+          <form onSubmit={handleVerify} className="space-y-4">
+            <div className="bg-[#d0e9d4] rounded-2xl p-6 text-center mb-2">
+              <span className="material-symbols-outlined text-3xl text-[#162b1d] mb-2 block">mark_email_read</span>
+              <p className="text-sm text-[#43474c]">
+                Codice inviato a <strong>{email}</strong>
+              </p>
+            </div>
+            <div className="bg-[#f6f3ee] rounded-2xl p-6 space-y-4">
+              <div>
+                <label className="text-xs uppercase tracking-widest text-[#4e6073] block mb-2">
+                  Inserisci il codice a 6 cifre
+                </label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  value={code}
+                  onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  placeholder="000000"
+                  required
+                  className="w-full px-4 py-3 bg-[#ebe8e3] rounded-xl border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20 text-[#1c1c19] placeholder:text-[#74777d] text-center text-2xl tracking-[0.5em] font-semibold"
+                />
+              </div>
+              {error && <p className="text-sm text-[#ba1a1a]">{error}</p>}
+              <button
+                type="submit"
+                disabled={loading || code.length < 6}
+                className="w-full py-4 bg-[#162b1d] text-white rounded-full font-semibold flex items-center justify-center gap-2 disabled:opacity-50 transition-all active:scale-95"
+              >
+                <span className="material-symbols-outlined">login</span>
+                {loading ? 'Verifica...' : 'Entra'}
+              </button>
+            </div>
+            <button
+              type="button"
+              onClick={() => { setSent(false); setCode(''); setError(''); }}
+              className="w-full text-center text-sm text-[#4e6073] hover:text-[#162b1d]"
+            >
+              Usa un'altra email
+            </button>
           </form>
         )}
       </div>
