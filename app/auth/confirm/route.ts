@@ -4,11 +4,10 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const token_hash = searchParams.get('token_hash');
-  const type = searchParams.get('type') as 'email' | 'recovery' | 'magiclink' | null;
+  const code = searchParams.get('code');
   const next = searchParams.get('next') ?? '/';
 
-  if (token_hash && type) {
+  if (code) {
     const cookieStore = await cookies();
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -25,14 +24,12 @@ export async function GET(request: NextRequest) {
       }
     );
 
-    const { error } = await supabase.auth.verifyOtp({ type, token_hash });
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
       return NextResponse.redirect(new URL(next, request.url));
     }
-    console.error('[auth/confirm] verifyOtp error:', error.message);
-    return NextResponse.redirect(new URL(`/login?error=${encodeURIComponent(error.message)}`, request.url));
+    console.error('[auth/confirm] exchangeCodeForSession error:', error.message);
   }
 
-  console.error('[auth/confirm] missing params — token_hash:', token_hash, 'type:', type, 'url:', request.url);
   return NextResponse.redirect(new URL('/login?error=invalid_link', request.url));
 }
