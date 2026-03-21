@@ -29,11 +29,11 @@ export default function Impostazioni() {
 
   return (
     <>
-      <header className="fixed top-0 w-full flex items-center gap-4 px-6 py-4 bg-[#fcf9f4]/80 backdrop-blur-md z-50">
-        <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#f0ede8] transition-colors">
-          <span className="material-symbols-outlined text-[#162b1d]">arrow_back</span>
+      <header className="fixed top-0 w-full flex items-center gap-4 px-6 py-4 bg-[#fcf9f4]/80 dark:bg-[#121210]/80 backdrop-blur-md z-50">
+        <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#f0ede8] dark:hover:bg-[#2c2c28] transition-colors">
+          <span className="material-symbols-outlined text-[#162b1d] dark:text-[#b4cdb8]">arrow_back</span>
         </button>
-        <span className="font-serif italic text-2xl text-[#162b1d]">Impostazioni</span>
+        <span className="font-serif italic text-2xl text-[#162b1d] dark:text-[#b4cdb8]">Impostazioni</span>
       </header>
 
       <main className="pt-24 pb-32 px-6 max-w-lg mx-auto space-y-6">
@@ -70,13 +70,13 @@ export default function Impostazioni() {
                 <button
                   type="button"
                   onClick={() => setAnnualGoal(g => Math.max(1, g - 1))}
-                  className="w-10 h-10 rounded-full bg-[#ebe8e3] flex items-center justify-center text-[#162b1d] font-bold text-lg hover:bg-[#dbd8d3] transition-colors"
+                  className="w-10 h-10 rounded-full bg-[#ebe8e3] flex items-center justify-center text-[#162b1d] dark:text-[#b4cdb8] font-bold text-lg hover:bg-[#dbd8d3] transition-colors"
                 >−</button>
-                <span className="font-serif text-4xl font-bold text-[#162b1d] w-16 text-center">{annualGoal}</span>
+                <span className="font-serif text-4xl font-bold text-[#162b1d] dark:text-[#b4cdb8] w-16 text-center">{annualGoal}</span>
                 <button
                   type="button"
                   onClick={() => setAnnualGoal(g => g + 1)}
-                  className="w-10 h-10 rounded-full bg-[#ebe8e3] flex items-center justify-center text-[#162b1d] font-bold text-lg hover:bg-[#dbd8d3] transition-colors"
+                  className="w-10 h-10 rounded-full bg-[#ebe8e3] flex items-center justify-center text-[#162b1d] dark:text-[#b4cdb8] font-bold text-lg hover:bg-[#dbd8d3] transition-colors"
                 >+</button>
               </div>
             </div>
@@ -89,13 +89,13 @@ export default function Impostazioni() {
                 <button
                   type="button"
                   onClick={() => setDailyPagesGoal(g => Math.max(1, g - 5))}
-                  className="w-10 h-10 rounded-full bg-[#ebe8e3] flex items-center justify-center text-[#162b1d] font-bold text-lg hover:bg-[#dbd8d3] transition-colors"
+                  className="w-10 h-10 rounded-full bg-[#ebe8e3] flex items-center justify-center text-[#162b1d] dark:text-[#b4cdb8] font-bold text-lg hover:bg-[#dbd8d3] transition-colors"
                 >−</button>
-                <span className="font-serif text-4xl font-bold text-[#162b1d] w-16 text-center">{dailyPagesGoal}</span>
+                <span className="font-serif text-4xl font-bold text-[#162b1d] dark:text-[#b4cdb8] w-16 text-center">{dailyPagesGoal}</span>
                 <button
                   type="button"
                   onClick={() => setDailyPagesGoal(g => g + 5)}
-                  className="w-10 h-10 rounded-full bg-[#ebe8e3] flex items-center justify-center text-[#162b1d] font-bold text-lg hover:bg-[#dbd8d3] transition-colors"
+                  className="w-10 h-10 rounded-full bg-[#ebe8e3] flex items-center justify-center text-[#162b1d] dark:text-[#b4cdb8] font-bold text-lg hover:bg-[#dbd8d3] transition-colors"
                 >+</button>
               </div>
             </div>
