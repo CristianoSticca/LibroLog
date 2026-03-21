@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Class-based dark mode for next-themes */
+@variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   /* Editorial Sanctuary – Design System */
   --color-primary: #162b1d;
@@ -67,12 +70,44 @@
   --radius-full: 9999px;
 }
 
+/* Runtime theme tokens */
+:root {
+  --theme-bg: #fcf9f4;
+  --theme-fg: #1c1c19;
+  --theme-surface: #f6f3ee;
+  --theme-surface-high: #ebe8e3;
+  --theme-surface-highest: #e5e2dd;
+  --theme-primary: #162b1d;
+  --theme-secondary: #4e6073;
+  --theme-outline: #74777d;
+  --theme-divider: #e5e2dd;
+  --theme-error: #ba1a1a;
+  --theme-error-bg: rgba(255, 218, 214, 0.4);
+  --theme-container-low: #f6f3ee;
+}
+
+.dark {
+  --theme-bg: #121210;
+  --theme-fg: #e5e2dd;
+  --theme-surface: #1e1e1b;
+  --theme-surface-high: #2c2c28;
+  --theme-surface-highest: #333330;
+  --theme-primary: #b4cdb8;
+  --theme-secondary: #b5c8df;
+  --theme-outline: #8e9197;
+  --theme-divider: #333330;
+  --theme-error: #ffb4ab;
+  --theme-error-bg: rgba(147, 0, 10, 0.35);
+  --theme-container-low: #1e1e1b;
+}
+
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
 body {
-  background-color: #fcf9f4;
-  color: #1c1c19;
+  background-color: var(--theme-bg);
+  color: var(--theme-fg);
   font-family: "Manrope", sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useBooks } from '@/context/BooksContext';
 import { getSettings, saveSettings } from '@/lib/settings';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function Impostazioni() {
   const { user, signOut } = useBooks();
@@ -36,6 +37,12 @@ export default function Impostazioni() {
       </header>
 
       <main className="pt-24 pb-32 px-6 max-w-lg mx-auto space-y-6">
+
+        {/* Aspetto */}
+        <section>
+          <h2 className="text-xs uppercase tracking-widest text-[#4e6073] mb-3">Aspetto</h2>
+          <ThemeToggle />
+        </section>
 
         {/* Account */}
         <section>
