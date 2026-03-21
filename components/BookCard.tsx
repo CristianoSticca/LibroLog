@@ -11,10 +11,10 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 const STATUS_COLORS: Record<string, string> = {
-  reading: 'text-[#162b1d] bg-[#fcf9f4]/90',
-  read: 'text-[#4e6073] bg-[#e5e2dd]/90',
-  'to-read': 'text-[#392117] bg-[#ffdbce]/90',
-  dropped: 'text-[#74777d] bg-[#f0ede8]/90',
+  reading: 'text-[#162b1d] bg-[#fcf9f4]/90 dark:text-[#b4cdb8] dark:bg-[#1e1e1b]/90',
+  read: 'text-[#4e6073] bg-[#e5e2dd]/90 dark:text-[#b5c8df] dark:bg-[#2c2c28]/90',
+  'to-read': 'text-[#392117] bg-[#ffdbce]/90 dark:text-[#ffdbce] dark:bg-[#2c2c28]/90',
+  dropped: 'text-[#74777d] bg-[#f0ede8]/90 dark:text-[#8e9197] dark:bg-[#2c2c28]/90',
 };
 
 interface BookCardProps {
@@ -51,8 +51,8 @@ export default function BookCard({ book, showStatus = true }: BookCardProps) {
             </div>
           )}
           {book.status === 'reading' && progress > 0 && (
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-[#d0e9d4]">
-              <div className="h-full bg-[#162b1d] rounded-full" style={{ width: `${progress}%` }} />
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-[#d0e9d4] dark:bg-[#2c4132]">
+              <div className="h-full bg-[#162b1d] dark:bg-[#b4cdb8] rounded-full" style={{ width: `${progress}%` }} />
             </div>
           )}
         </div>

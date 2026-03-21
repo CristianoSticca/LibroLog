@@ -73,15 +73,15 @@ export default function Ricerca() {
 
   return (
     <>
-      <header className="fixed top-0 w-full flex items-center gap-4 px-6 py-4 bg-[#fcf9f4]/80 backdrop-blur-md z-50">
-        <span className="font-serif italic text-2xl text-[#162b1d] flex-shrink-0">LibroLog</span>
+      <header className="fixed top-0 w-full flex items-center gap-4 px-6 py-4 bg-[#fcf9f4]/80 dark:bg-[#121210]/80 backdrop-blur-md z-50">
+        <span className="font-serif italic text-2xl text-[#162b1d] dark:text-[#b4cdb8] flex-shrink-0">LibroLog</span>
         <div className="relative flex-1 max-w-lg">
           <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#74777d]">search</span>
           <input
             value={query}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && search()}
-            className="w-full pl-12 pr-4 py-2.5 bg-[#ebe8e3] rounded-xl border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20 text-[#1c1c19] placeholder:text-[#74777d] text-sm"
+            className="w-full pl-12 pr-4 py-2.5 bg-[#ebe8e3] dark:bg-[#2c2c28] rounded-xl border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20 dark:focus:ring-[#b4cdb8]/20 text-[#1c1c19] dark:text-[#e5e2dd] placeholder:text-[#74777d] text-sm"
             placeholder="Titolo, autore o ISBN..."
             autoFocus
           />
@@ -99,7 +99,7 @@ export default function Ricerca() {
         {!searched && (
           <div className="text-center py-20">
             <span className="material-symbols-outlined text-6xl text-[#c4c6cd] mb-4 block">search</span>
-            <h2 className="font-serif text-2xl text-[#162b1d] mb-2">Cerca un libro</h2>
+            <h2 className="font-serif text-2xl text-[#162b1d] dark:text-[#b4cdb8] mb-2">Cerca un libro</h2>
             <p className="text-[#43474c] text-sm">Inserisci titolo, autore o ISBN per trovare il libro.</p>
           </div>
         )}
@@ -139,7 +139,7 @@ export default function Ricerca() {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-serif text-lg leading-tight text-[#162b1d] line-clamp-2">{info.title}</h3>
+                    <h3 className="font-serif text-lg leading-tight text-[#162b1d] dark:text-[#b4cdb8] line-clamp-2">{info.title}</h3>
                     <p className="text-sm text-[#4e6073] mt-0.5 truncate">
                       {info.authors?.join(', ') || 'Autore sconosciuto'}
                     </p>

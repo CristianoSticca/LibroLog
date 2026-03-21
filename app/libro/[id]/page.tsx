@@ -47,7 +47,7 @@ export default function LibroDetail() {
       <div className="min-h-screen flex flex-col items-center justify-center px-6">
         <span className="material-symbols-outlined text-5xl text-[#c4c6cd] mb-4 block">book_off</span>
         <p className="text-[#43474c] mb-4">Libro non trovato.</p>
-        <Link href="/libreria" className="text-[#162b1d] font-semibold underline">Torna alla libreria</Link>
+        <Link href="/libreria" className="text-[#162b1d] dark:text-[#b4cdb8] font-semibold underline">Torna alla libreria</Link>
       </div>
     );
   }
@@ -91,15 +91,15 @@ export default function LibroDetail() {
 
   return (
     <>
-      <header className="fixed top-0 w-full flex items-center gap-4 px-6 py-4 bg-[#fcf9f4]/80 backdrop-blur-md z-50">
-        <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#f0ede8] transition-colors">
-          <span className="material-symbols-outlined text-[#162b1d]">arrow_back</span>
+      <header className="fixed top-0 w-full flex items-center gap-4 px-6 py-4 bg-[#fcf9f4]/80 dark:bg-[#121210]/80 backdrop-blur-md z-50">
+        <button onClick={() => router.back()} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#f0ede8] dark:hover:bg-[#2c2c28] transition-colors">
+          <span className="material-symbols-outlined text-[#162b1d] dark:text-[#b4cdb8]">arrow_back</span>
         </button>
-        <span className="font-serif italic text-xl text-[#162b1d] flex-1 truncate">{book.title}</span>
+        <span className="font-serif italic text-xl text-[#162b1d] dark:text-[#b4cdb8] flex-1 truncate">{book.title}</span>
         <button
           onClick={handleSave}
           className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
-            saved ? 'bg-[#d0e9d4] text-[#162b1d]' : 'bg-[#162b1d] text-white'
+            saved ? 'bg-[#d0e9d4] text-[#162b1d] dark:text-[#b4cdb8] dark:bg-[#2c4132] dark:text-[#b4cdb8]' : 'bg-[#162b1d] text-white dark:bg-[#b4cdb8] dark:text-[#121210]'
           }`}
         >
           {saved ? '✓ Salvato' : 'Salva'}
@@ -119,7 +119,7 @@ export default function LibroDetail() {
             )}
           </div>
           <div className="flex-1 min-w-0 py-2">
-            <h1 className="font-serif text-2xl text-[#162b1d] leading-tight mb-1">{book.title}</h1>
+            <h1 className="font-serif text-2xl text-[#162b1d] dark:text-[#b4cdb8] leading-tight mb-1">{book.title}</h1>
             <p className="text-[#4e6073] mb-2">{book.author}</p>
             {book.publishedYear && (
               <p className="text-xs text-[#74777d] mb-1">{book.publishedYear}</p>
@@ -183,11 +183,11 @@ export default function LibroDetail() {
                   onChange={e => handlePageChange(e.target.value)}
                   min={0}
                   max={book.pages}
-                  className="w-20 px-3 py-1.5 bg-[#ebe8e3] rounded-lg text-center font-bold text-[#162b1d] border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20 text-sm"
+                  className="w-20 px-3 py-1.5 bg-[#ebe8e3] rounded-lg text-center font-bold text-[#162b1d] dark:text-[#b4cdb8] border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20 text-sm"
                 />
                 <span className="text-sm text-[#74777d]">di {book.pages}</span>
               </div>
-              <span className="font-serif text-2xl font-bold text-[#162b1d]">{progress}%</span>
+              <span className="font-serif text-2xl font-bold text-[#162b1d] dark:text-[#b4cdb8]">{progress}%</span>
             </div>
             <div className="h-2 w-full bg-[#d0e9d4] rounded-full overflow-hidden">
               <div className="h-full bg-[#162b1d] rounded-full transition-all" style={{ width: `${progress}%` }} />
@@ -209,7 +209,7 @@ export default function LibroDetail() {
               ))}
               <button
                 onClick={() => { setCurrentPage(book.pages); setPageInput(String(book.pages)); setStatus('read'); }}
-                className="px-3 py-1 bg-[#d0e9d4] text-[#162b1d] rounded-lg text-xs font-semibold hover:bg-[#b4cdb8] transition-colors"
+                className="px-3 py-1 bg-[#d0e9d4] text-[#162b1d] dark:text-[#b4cdb8] rounded-lg text-xs font-semibold hover:bg-[#b4cdb8] transition-colors"
               >
                 Finito! ✓
               </button>
@@ -272,7 +272,7 @@ export default function LibroDetail() {
         <button
           onClick={handleSave}
           className={`w-full py-4 rounded-full font-semibold flex items-center justify-center gap-2 transition-all active:scale-95 mb-4 ${
-            saved ? 'bg-[#d0e9d4] text-[#162b1d]' : 'bg-[#162b1d] text-white shadow-[0px_12px_32px_rgba(28,28,25,0.1)]'
+            saved ? 'bg-[#d0e9d4] text-[#162b1d] dark:text-[#b4cdb8]' : 'bg-[#162b1d] text-white shadow-[0px_12px_32px_rgba(28,28,25,0.1)]'
           }`}
         >
           <span className="material-symbols-outlined">{saved ? 'check_circle' : 'save'}</span>

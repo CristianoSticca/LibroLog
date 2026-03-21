@@ -16,7 +16,7 @@ export default function BottomNav() {
   if (pathname === '/login') return null;
 
   return (
-    <nav className="fixed bottom-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#fcf9f4]/90 backdrop-blur-xl z-50 rounded-t-3xl shadow-[0px_-12px_32px_rgba(28,28,25,0.05)]">
+    <nav className="fixed bottom-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#fcf9f4]/90 dark:bg-[#1e1e1b]/90 backdrop-blur-xl z-50 rounded-t-3xl shadow-[0px_-12px_32px_rgba(28,28,25,0.05)]">
       {TABS.map(tab => {
         const isActive = tab.href === '/' ? pathname === '/' : pathname.startsWith(tab.href);
         return (
@@ -26,7 +26,7 @@ export default function BottomNav() {
             className={`flex flex-col items-center justify-center px-5 py-2 transition-all ${
               isActive
                 ? 'bg-[#2c4132] text-[#fcf9f4] rounded-2xl scale-105'
-                : 'text-[#4e6073] hover:text-[#162b1d]'
+                : 'text-[#4e6073] hover:text-[#162b1d] dark:text-[#8e9197] dark:hover:text-[#b4cdb8]'
             }`}
           >
             <span

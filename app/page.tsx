@@ -33,26 +33,26 @@ export default function Dashboard() {
 
   return (
     <>
-      <header className="fixed top-0 w-full flex justify-between items-center px-6 py-4 bg-[#fcf9f4]/80 backdrop-blur-md z-50">
-        <span className="font-serif italic text-2xl text-[#162b1d]">LibroLog</span>
+      <header className="fixed top-0 w-full flex justify-between items-center px-6 py-4 bg-[#fcf9f4]/80 dark:bg-[#121210]/80 backdrop-blur-md z-50">
+        <span className="font-serif italic text-2xl text-[#162b1d] dark:text-[#b4cdb8]">LibroLog</span>
         <button
           onClick={() => router.push('/impostazioni')}
-          className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#f0ede8] transition-colors"
+          className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#f0ede8] dark:hover:bg-[#2c2c28] transition-colors"
           title="Impostazioni"
         >
-          <span className="material-symbols-outlined text-[#162b1d]">settings</span>
+          <span className="material-symbols-outlined text-[#162b1d] dark:text-[#b4cdb8]">settings</span>
         </button>
       </header>
 
       <main className="pt-24 pb-32 px-6 max-w-2xl mx-auto">
         <section className="mb-10">
-          <h1 className="font-serif text-4xl font-light mb-8 text-[#162b1d]">
+          <h1 className="font-serif text-4xl font-light mb-8 text-[#162b1d] dark:text-[#b4cdb8]">
             {books.length === 0 ? 'Benvenuto.' : 'Bentornato.'}
           </h1>
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-[#f0ede8] p-6 rounded-xl flex flex-col justify-between aspect-square">
               <span className="text-xs uppercase tracking-widest text-[#4e6073]">Letti nel {currentYear}</span>
-              <span className="font-serif text-5xl font-bold text-[#162b1d]">{booksThisYear.length}</span>
+              <span className="font-serif text-5xl font-bold text-[#162b1d] dark:text-[#b4cdb8]">{booksThisYear.length}</span>
             </div>
             <div className="bg-[#2c4132] p-6 rounded-xl flex flex-col justify-between aspect-square">
               <span className="text-xs uppercase tracking-widest text-[#95ad9a]">Pagine totali</span>
@@ -63,7 +63,7 @@ export default function Dashboard() {
 
         <section className="mb-12">
           <div className="flex justify-between items-baseline mb-6">
-            <h2 className="font-serif text-2xl text-[#162b1d]">In lettura</h2>
+            <h2 className="font-serif text-2xl text-[#162b1d] dark:text-[#b4cdb8]">In lettura</h2>
             <Link href="/libreria" className="text-[#4e6073] text-sm font-medium hover:underline">
               Vedi libreria
             </Link>
@@ -82,15 +82,15 @@ export default function Dashboard() {
               </div>
               <div className="flex flex-col justify-between flex-grow py-2 min-w-0">
                 <div>
-                  <h3 className="font-serif text-2xl text-[#162b1d] mb-1 leading-tight line-clamp-2">{currentBook.title}</h3>
+                  <h3 className="font-serif text-2xl text-[#162b1d] dark:text-[#b4cdb8] mb-1 leading-tight line-clamp-2">{currentBook.title}</h3>
                   <p className="text-[#4e6073] text-base mb-4 truncate">{currentBook.author}</p>
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between items-end">
                       <span className="text-sm text-[#43474c] font-medium">{progress}% completato</span>
                       <span className="text-xs text-[#4e6073] italic">Pag. {currentBook.currentPage} di {currentBook.pages}</span>
                     </div>
-                    <div className="h-1 w-full bg-[#d0e9d4] rounded-full overflow-hidden">
-                      <div className="h-full bg-[#162b1d] rounded-full transition-all" style={{ width: `${progress}%` }} />
+                    <div className="h-1 w-full bg-[#d0e9d4] dark:bg-[#2c4132] rounded-full overflow-hidden">
+                      <div className="h-full bg-[#162b1d] dark:bg-[#b4cdb8] rounded-full transition-all" style={{ width: `${progress}%` }} />
                     </div>
                   </div>
                 </div>
@@ -118,7 +118,7 @@ export default function Dashboard() {
         {booksByStatus('to-read').length > 0 && (
           <section className="mb-12">
             <div className="flex justify-between items-baseline mb-6">
-              <h2 className="font-serif text-2xl text-[#162b1d]">Da leggere</h2>
+              <h2 className="font-serif text-2xl text-[#162b1d] dark:text-[#b4cdb8]">Da leggere</h2>
               <Link href="/libreria" className="text-[#4e6073] text-sm font-medium hover:underline">
                 Vedi tutti ({booksByStatus('to-read').length})
               </Link>
@@ -129,7 +129,7 @@ export default function Dashboard() {
                   <div className="aspect-[2/3] bg-[#e5e2dd] rounded-lg mb-2 shadow-sm overflow-hidden">
                     {b.cover && <img src={b.cover} alt={b.title} className="w-full h-full object-cover" />}
                   </div>
-                  <h4 className="font-semibold text-sm text-[#162b1d] truncate">{b.title}</h4>
+                  <h4 className="font-semibold text-sm text-[#162b1d] dark:text-[#b4cdb8] truncate">{b.title}</h4>
                   <p className="text-xs text-[#4e6073] truncate">{b.author}</p>
                 </Link>
               ))}
@@ -140,7 +140,7 @@ export default function Dashboard() {
         {books.length === 0 && (
           <section className="text-center py-12">
             <span className="material-symbols-outlined text-6xl text-[#c4c6cd] mb-4 block">library_books</span>
-            <h2 className="font-serif text-2xl text-[#162b1d] mb-2">Inizia la tua libreria</h2>
+            <h2 className="font-serif text-2xl text-[#162b1d] dark:text-[#b4cdb8] mb-2">Inizia la tua libreria</h2>
             <p className="text-[#43474c] mb-6 text-sm">Cerca un libro e aggiungilo alla tua collezione.</p>
             <Link href="/ricerca" className="inline-flex items-center gap-2 px-8 py-4 bg-[#162b1d] text-white rounded-full font-semibold">
               <span className="material-symbols-outlined">search</span>

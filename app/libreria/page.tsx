@@ -32,15 +32,15 @@ export default function Libreria() {
 
   return (
     <>
-      <header className="fixed top-0 w-full flex justify-between items-center px-6 py-4 bg-[#fcf9f4]/80 backdrop-blur-md z-50">
-        <span className="font-serif italic text-2xl text-[#162b1d]">LibroLog</span>
+      <header className="fixed top-0 w-full flex justify-between items-center px-6 py-4 bg-[#fcf9f4]/80 dark:bg-[#121210]/80 backdrop-blur-md z-50">
+        <span className="font-serif italic text-2xl text-[#162b1d] dark:text-[#b4cdb8] dark:text-[#b4cdb8]">LibroLog</span>
       </header>
 
       <main className="pt-24 pb-32 px-6 max-w-5xl mx-auto">
         <section className="mb-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-1">
-              <h2 className="font-serif text-4xl text-[#162b1d] font-medium">La tua Libreria</h2>
+              <h2 className="font-serif text-4xl text-[#162b1d] dark:text-[#b4cdb8] font-medium">La tua Libreria</h2>
               <p className="text-[#4e6073]">
                 {books.length === 0
                   ? 'La tua collezione è vuota.'

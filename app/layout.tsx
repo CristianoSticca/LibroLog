@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Newsreader, Manrope } from "next/font/google";
 import "./globals.css";
 import { BooksProvider } from "@/context/BooksContext";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import BottomNav from "@/components/BottomNav";
 
 const newsreader = Newsreader({
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="it" className={`${newsreader.variable} ${manrope.variable} h-full`}>
+    <html lang="it" className={`${newsreader.variable} ${manrope.variable} h-full`} suppressHydrationWarning>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
@@ -35,11 +36,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <meta name="apple-mobile-web-app-title" content="LibroLog" />
         <meta name="theme-color" content="#162b1d" />
       </head>
-      <body className="min-h-full bg-[#fcf9f4] text-[#1c1c19]">
-        <BooksProvider>
-          {children}
-          <BottomNavWrapper />
-        </BooksProvider>
+      <body className="min-h-full">
+        <ThemeProvider>
+          <BooksProvider>
+            {children}
+            <BottomNavWrapper />
+          </BooksProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

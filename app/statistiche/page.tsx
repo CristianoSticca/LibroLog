@@ -97,12 +97,12 @@ export default function Statistiche() {
   if (books.length === 0) {
     return (
       <>
-        <header className="fixed top-0 w-full flex items-center px-6 py-4 bg-[#fcf9f4]/80 backdrop-blur-md z-50">
-          <span className="font-serif italic text-2xl text-[#162b1d]">LibroLog</span>
+        <header className="fixed top-0 w-full flex items-center px-6 py-4 bg-[#fcf9f4]/80 dark:bg-[#121210]/80 backdrop-blur-md z-50">
+          <span className="font-serif italic text-2xl text-[#162b1d] dark:text-[#b4cdb8]">LibroLog</span>
         </header>
         <main className="pt-24 pb-32 px-6 flex flex-col items-center justify-center min-h-screen text-center">
           <span className="material-symbols-outlined text-6xl text-[#c4c6cd] mb-4 block">leaderboard</span>
-          <h2 className="font-serif text-2xl text-[#162b1d] mb-2">Nessuna statistica</h2>
+          <h2 className="font-serif text-2xl text-[#162b1d] dark:text-[#b4cdb8] mb-2">Nessuna statistica</h2>
           <p className="text-[#43474c] text-sm mb-6">Aggiungi e completa qualche libro per vedere le tue statistiche.</p>
           <Link href="/ricerca" className="inline-flex items-center gap-2 px-6 py-3 bg-[#162b1d] text-white rounded-full text-sm font-semibold">
             <span className="material-symbols-outlined text-sm">search</span>
@@ -115,15 +115,15 @@ export default function Statistiche() {
 
   return (
     <>
-      <header className="fixed top-0 w-full flex items-center px-6 py-4 bg-[#fcf9f4]/80 backdrop-blur-md z-50">
-        <span className="font-serif italic text-2xl text-[#162b1d]">LibroLog</span>
+      <header className="fixed top-0 w-full flex items-center px-6 py-4 bg-[#fcf9f4]/80 dark:bg-[#121210]/80 backdrop-blur-md z-50">
+        <span className="font-serif italic text-2xl text-[#162b1d] dark:text-[#b4cdb8]">LibroLog</span>
       </header>
 
       <main className="pt-24 pb-32 px-6 max-w-4xl mx-auto">
 
         {/* Header */}
         <section className="mb-10">
-          <h1 className="font-serif text-4xl font-medium tracking-tight text-[#162b1d] mb-2">Il tuo viaggio letterario</h1>
+          <h1 className="font-serif text-4xl font-medium tracking-tight text-[#162b1d] dark:text-[#b4cdb8] mb-2">Il tuo viaggio letterario</h1>
           <p className="text-[#4e6073] text-lg italic">"Un libro è un giardino che puoi custodire in tasca."</p>
         </section>
 
@@ -148,7 +148,7 @@ export default function Statistiche() {
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="font-serif text-5xl font-bold text-[#162b1d]">{stats.booksThisYear.length}</span>
+                <span className="font-serif text-5xl font-bold text-[#162b1d] dark:text-[#b4cdb8]">{stats.booksThisYear.length}</span>
                 <span className="text-sm text-[#4e6073]">di {annualGoal} libri</span>
               </div>
             </div>
@@ -164,10 +164,10 @@ export default function Statistiche() {
             <div className="flex justify-between items-end mb-8">
               <div>
                 <span className="text-xs uppercase tracking-widest text-[#4e6073] block mb-1">Attività</span>
-                <h3 className="font-serif text-2xl text-[#162b1d]">Libri letti</h3>
+                <h3 className="font-serif text-2xl text-[#162b1d] dark:text-[#b4cdb8]">Libri letti</h3>
               </div>
               {stats.monthDelta !== 0 && (
-                <span className={`text-xs font-bold px-3 py-1 rounded-full ${stats.monthDelta > 0 ? 'bg-[#d0e9d4] text-[#162b1d]' : 'bg-[#ffdad6] text-[#ba1a1a]'}`}>
+                <span className={`text-xs font-bold px-3 py-1 rounded-full ${stats.monthDelta > 0 ? 'bg-[#d0e9d4] text-[#162b1d] dark:bg-[#2c4132] dark:text-[#b4cdb8]' : 'bg-[#ffdad6] text-[#ba1a1a]'}`}>
                   {stats.monthDelta > 0 ? '+' : ''}{stats.monthDelta} vs. mese prec.
                 </span>
               )}
@@ -179,7 +179,7 @@ export default function Statistiche() {
                     className={`w-full rounded-t-lg transition-all ${stats.recordMonthIndices.includes(i) ? 'bg-[#162b1d]' : 'bg-[#ebe8e3] hover:bg-[#b4cdb8]'}`}
                     style={{ height: `${Math.max((stats.byMonth[i] / maxMonth) * 100, stats.byMonth[i] > 0 ? 8 : 2)}px` }}
                   />
-                  <span className={`text-[9px] flex-shrink-0 ${stats.recordMonthIndices.includes(i) ? 'font-bold text-[#162b1d]' : 'text-[#74777d]'}`}>{m[0]}</span>
+                  <span className={`text-[9px] flex-shrink-0 ${stats.recordMonthIndices.includes(i) ? 'font-bold text-[#162b1d] dark:text-[#b4cdb8]' : 'text-[#74777d]'}`}>{m[0]}</span>
                 </div>
               ))}
             </div>
@@ -190,7 +190,7 @@ export default function Statistiche() {
             <div className="md:col-span-8 bg-white rounded-2xl p-8 shadow-[0px_12px_32px_rgba(28,28,25,0.05)]">
               <div className="mb-6">
                 <span className="text-xs uppercase tracking-widest text-[#4e6073] block mb-1">Analisi</span>
-                <h3 className="font-serif text-2xl text-[#162b1d]">Generi preferiti</h3>
+                <h3 className="font-serif text-2xl text-[#162b1d] dark:text-[#b4cdb8]">Generi preferiti</h3>
               </div>
               <div className="flex flex-col sm:flex-row items-center gap-8">
                 {/* Donut chart */}
@@ -254,17 +254,17 @@ export default function Statistiche() {
           {/* Stats secondarie */}
           <div className="md:col-span-4 bg-[#f0ede8] rounded-2xl p-6 flex flex-col justify-between">
             <span className="text-xs uppercase tracking-widest text-[#4e6073]">Totale completati</span>
-            <span className="font-serif text-5xl font-bold text-[#162b1d]">{stats.read.length}</span>
+            <span className="font-serif text-5xl font-bold text-[#162b1d] dark:text-[#b4cdb8]">{stats.read.length}</span>
           </div>
           <div className="md:col-span-4 bg-[#f0ede8] rounded-2xl p-6 flex flex-col justify-between">
             <span className="text-xs uppercase tracking-widest text-[#4e6073]">Pagine lette</span>
-            <span className="font-serif text-4xl font-bold text-[#162b1d]">{stats.totalPages.toLocaleString('it-IT')}</span>
+            <span className="font-serif text-4xl font-bold text-[#162b1d] dark:text-[#b4cdb8]">{stats.totalPages.toLocaleString('it-IT')}</span>
           </div>
           {stats.avgRating > 0 && (
             <div className="md:col-span-4 bg-[#f0ede8] rounded-2xl p-6 flex flex-col justify-between">
               <span className="text-xs uppercase tracking-widest text-[#4e6073]">Valutazione media</span>
               <div className="flex items-end gap-2">
-                <span className="font-serif text-4xl font-bold text-[#162b1d]">{stats.avgRating.toFixed(1)}</span>
+                <span className="font-serif text-4xl font-bold text-[#162b1d] dark:text-[#b4cdb8]">{stats.avgRating.toFixed(1)}</span>
                 <span className="text-[#4e6073] mb-1">/ 5</span>
               </div>
             </div>
@@ -276,7 +276,7 @@ export default function Statistiche() {
               <div>
                 <span className="text-xs uppercase tracking-widest text-[#4e6073] block mb-1">Pagine al giorno</span>
                 <div className="flex items-end gap-2">
-                  <span className="font-serif text-4xl font-bold text-[#162b1d]">{stats.avgPagesPerDay}</span>
+                  <span className="font-serif text-4xl font-bold text-[#162b1d] dark:text-[#b4cdb8]">{stats.avgPagesPerDay}</span>
                   <span className="text-sm text-[#4e6073] mb-1">/ {dailyPagesGoal} obiettivo</span>
                 </div>
               </div>
@@ -301,7 +301,7 @@ export default function Statistiche() {
           {/* Autori più letti */}
           {stats.topAuthors.length > 0 && (
             <div className="md:col-span-6 bg-white rounded-2xl p-6 shadow-[0px_12px_32px_rgba(28,28,25,0.05)]">
-              <h3 className="font-serif text-xl text-[#162b1d] mb-4">Autori più letti</h3>
+              <h3 className="font-serif text-xl text-[#162b1d] dark:text-[#b4cdb8] mb-4">Autori più letti</h3>
               <div className="space-y-3">
                 {stats.topAuthors.map(([author, count]) => (
                   <div key={author} className="flex items-center gap-3">
@@ -309,7 +309,7 @@ export default function Statistiche() {
                     <div className="flex-1 h-1.5 bg-[#e5e2dd] rounded-full overflow-hidden">
                       <div className="h-full bg-[#162b1d] rounded-full" style={{ width: `${(count / stats.topAuthors[0][1]) * 100}%` }} />
                     </div>
-                    <span className="text-xs font-semibold text-[#162b1d] w-12 text-right flex-shrink-0">{count} libr{count === 1 ? 'o' : 'i'}</span>
+                    <span className="text-xs font-semibold text-[#162b1d] dark:text-[#b4cdb8] w-12 text-right flex-shrink-0">{count} libr{count === 1 ? 'o' : 'i'}</span>
                   </div>
                 ))}
               </div>
@@ -319,7 +319,7 @@ export default function Statistiche() {
           {/* Migliori libri */}
           {stats.bestRated.length > 0 && (
             <div className="md:col-span-6 bg-white rounded-2xl p-6 shadow-[0px_12px_32px_rgba(28,28,25,0.05)]">
-              <h3 className="font-serif text-xl text-[#162b1d] mb-4">I tuoi preferiti</h3>
+              <h3 className="font-serif text-xl text-[#162b1d] dark:text-[#b4cdb8] mb-4">I tuoi preferiti</h3>
               <div className="space-y-4">
                 {stats.bestRated.map(b => (
                   <Link key={b.id} href={`/libro/${b.id}`} className="flex items-center gap-3 group">
@@ -327,7 +327,7 @@ export default function Statistiche() {
                       {b.cover && <img src={b.cover} alt={b.title} className="w-full h-full object-cover" />}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-[#162b1d] truncate group-hover:underline">{b.title}</p>
+                      <p className="text-sm font-semibold text-[#162b1d] dark:text-[#b4cdb8] truncate group-hover:underline">{b.title}</p>
                       <p className="text-xs text-[#4e6073] truncate">{b.author}</p>
                       <RatingStars value={b.rating || 0} size="sm" />
                     </div>
@@ -340,8 +340,8 @@ export default function Statistiche() {
 
         {/* Citazione motivazionale */}
         <section className="text-center py-12 border-t border-[#c4c6cd]/20">
-          <span className="material-symbols-outlined text-[#162b1d] mb-4 block" style={{ fontSize: '32px' }}>format_quote</span>
-          <blockquote className="font-serif text-2xl italic text-[#1c1c19] mb-4 leading-snug max-w-xl mx-auto">
+          <span className="material-symbols-outlined text-[#162b1d] dark:text-[#b4cdb8] mb-4 block" style={{ fontSize: '32px' }}>format_quote</span>
+          <blockquote className="font-serif text-2xl italic text-[#1c1c19] dark:text-[#b4cdb8] mb-4 leading-snug max-w-xl mx-auto">
             "Leggere non è un dovere, ma un modo per vivere infinite vite."
           </blockquote>
           <p className="text-xs uppercase tracking-widest text-[#4e6073]">— Umberto Eco</p>
