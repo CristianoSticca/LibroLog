@@ -128,13 +128,24 @@ export default function LibroDetail() {
               <p className="text-xs text-[#74777d] mb-3">{book.pages} pagine</p>
             )}
             {book.genres && book.genres.length > 0 && (
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-1.5 mb-3">
                 {book.genres.slice(0, 3).map(g => (
                   <span key={g} className="text-[10px] bg-[#cfe2f9] text-[#526478] px-2 py-0.5 rounded-sm uppercase tracking-tighter font-bold">
                     {g}
                   </span>
                 ))}
               </div>
+            )}
+            {book.status !== 'dropped' && (
+              <a
+                href={`https://www.amazon.it/s?k=${encodeURIComponent(`${book.title} ${book.author}`)}&i=stripbooks`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs text-[#74777d] hover:text-[#1c1c19] transition-colors"
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>shopping_cart</span>
+                Acquista su Amazon
+              </a>
             )}
           </div>
         </div>
@@ -253,7 +264,7 @@ export default function LibroDetail() {
         {book.description && (
           <div className="bg-[#f6f3ee] rounded-2xl p-5 mb-6">
             <h3 className="text-xs uppercase tracking-widest text-[#4e6073] mb-3">Descrizione</h3>
-            <p className="text-sm text-[#43474c] leading-relaxed line-clamp-6">{book.description}</p>
+            <p className="text-sm text-[#43474c] leading-relaxed">{book.description}</p>
           </div>
         )}
 
