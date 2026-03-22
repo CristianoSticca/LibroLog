@@ -4,6 +4,7 @@ import "./globals.css";
 import { BooksProvider } from "@/context/BooksContext";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import BottomNav from "@/components/BottomNav";
+import { Analytics } from "@vercel/analytics/next";
 
 const newsreader = Newsreader({
   variable: "--font-headline",
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <BottomNavWrapper />
           </BooksProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
