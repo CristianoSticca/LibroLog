@@ -6,6 +6,7 @@ import { useReadingSessions } from '@/context/ReadingSessionsContext';
 import RatingStars from '@/components/RatingStars';
 import Link from 'next/link';
 import { getSettings } from '@/lib/settings';
+import YearInBooksModal from '@/components/YearInBooksModal';
 
 const MONTHS = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'];
 const CIRCLE_R = 80;
@@ -15,9 +16,10 @@ const GENRE_COLORS = ['#2c4132', '#4e6073', '#cfe2f9', '#392117', '#d0e9d4', '#c
 
 export default function Statistiche() {
   const { books } = useBooks();
-  const { avgPagesPerHour } = useReadingSessions();
+  const { avgPagesPerHour, streakDays } = useReadingSessions();
   const [annualGoal, setAnnualGoal] = useState(12);
   const [dailyPagesGoal, setDailyPagesGoal] = useState(30);
+  const [showYearCard, setShowYearCard] = useState(false);
 
   useEffect(() => {
     const s = getSettings();
@@ -83,7 +85,7 @@ export default function Statistiche() {
     const avgPagesPerDay = dayOfYear > 0 ? Math.round(pagesThisYear / dayOfYear) : 0;
 
     // Best rated
-    const bestRated = [...read].filter(b => b.rating).sort((a, b) => (b.rating || 0) - (a.rating || 0)).slice(0, 3);
+    const bestRated = [...read].filter(b => b.rating).sort((a, b) => (b.rating || 0) - (a.rating || 0)).slice(0, 5);
 
     return {
       read, reading, toRead, booksThisYear, totalPages, avgRating,
@@ -115,13 +117,63 @@ export default function Statistiche() {
     );
   }
 
+  const booksWithPages = stats.booksThisYear.filter(b => (b.pages || 0) > 0);
+  const longestBook = booksWithPages.length
+    ? booksWithPages.reduce((max, b) => (b.pages || 0) > (max.pages || 0) ? b : max)
+    : null;
+  const shortestBook = booksWithPages.length
+    ? booksWithPages.reduce((min, b) => (b.pages || 0) < (min.pages || 0) ? b : min)
+    : null;
+
+  const monthlyCovers = Array.from({ length: 12 }, (_, i) =>
+    stats.booksThisYear
+      .filter(b => b.endDate && new Date(b.endDate).getMonth() === i)
+      .map(b => b.cover)
+      .filter(Boolean) as string[]
+  );
+
+  const yearInBooksData = {
+    year: stats.currentYear,
+    booksCount: stats.booksThisYear.length,
+    pagesCount: stats.booksThisYear.reduce((s, b) => s + (b.pages || 0), 0),
+    topGenres: stats.topGenres.map(([g]) => g),
+    recordMonth: stats.recordMonth,
+    topCovers: stats.booksThisYear.map(b => b.cover).filter(Boolean) as string[],
+    bestRatedCovers: stats.bestRated.map(b => b.cover).filter(Boolean) as string[],
+    fiveStarCovers: stats.read.filter(b => b.rating === 5).map(b => b.cover).filter(Boolean) as string[],
+    monthlyCovers,
+    longestBook: longestBook ? { title: longestBook.title, pages: longestBook.pages } : null,
+    shortestBook: shortestBook && shortestBook.id !== longestBook?.id ? { title: shortestBook.title, pages: shortestBook.pages } : null,
+    streakDays,
+  };
+
   return (
     <>
+      {showYearCard && (
+        <YearInBooksModal data={yearInBooksData} onClose={() => setShowYearCard(false)} />
+      )}
+
       <header className="fixed top-0 w-full flex items-center px-6 py-4 bg-[#fcf9f4]/80 dark:bg-[#121210]/80 backdrop-blur-md z-50">
         <span className="font-serif italic text-2xl text-[#162b1d] dark:text-[#b4cdb8]">LibroLog</span>
       </header>
 
       <main className="pt-24 pb-32 px-6 max-w-4xl mx-auto">
+
+        {/* Banner Year in Books */}
+        {stats.booksThisYear.length > 0 && (
+          <button
+            onClick={() => setShowYearCard(true)}
+            className="w-full mb-8 rounded-2xl overflow-hidden relative flex items-center gap-4 px-6 py-5 text-left transition-transform active:scale-[0.99]"
+            style={{ background: 'linear-gradient(135deg, #162b1d 0%, #2c4132 100%)' }}
+          >
+            <div className="flex-1">
+              <p className="text-[#95ad9a] text-xs uppercase tracking-widest mb-1">Scopri</p>
+              <p className="font-serif text-white text-xl leading-tight">Il tuo {stats.currentYear} in libri</p>
+              <p className="text-[#95ad9a] text-sm mt-1">{stats.booksThisYear.length} libri · {yearInBooksData.pagesCount.toLocaleString('it-IT')} pagine</p>
+            </div>
+            <span className="material-symbols-outlined text-white opacity-80 text-4xl">auto_stories</span>
+          </button>
+        )}
 
         {/* Header */}
         <section className="mb-10">
