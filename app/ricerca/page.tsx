@@ -283,33 +283,25 @@ export default function Ricerca() {
         <IsbnScanner onScan={handleScan} onClose={() => setScannerOpen(false)} />
       )}
 
-      <header className="fixed top-0 w-full flex items-center gap-4 px-6 py-4 bg-[#fcf9f4]/80 dark:bg-[#121210]/80 backdrop-blur-md z-50">
-        <span className="font-serif italic text-2xl text-[#162b1d] dark:text-[#b4cdb8] flex-shrink-0">LibroLog</span>
-        <div className="relative flex-1 max-w-lg">
+      <header className="fixed top-0 w-full px-4 py-3 bg-[#fcf9f4]/80 dark:bg-[#121210]/80 backdrop-blur-md z-50">
+        <div className="relative">
           <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#74777d]">search</span>
           <input
             value={query}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && search()}
-            className="w-full pl-12 pr-4 py-2.5 bg-[#ebe8e3] dark:bg-[#2c2c28] rounded-xl border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20 dark:focus:ring-[#b4cdb8]/20 text-[#1c1c19] dark:text-[#e5e2dd] placeholder:text-[#74777d] text-sm"
+            className="w-full pl-12 pr-12 py-3 bg-[#ebe8e3] dark:bg-[#2c2c28] rounded-full border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20 dark:focus:ring-[#b4cdb8]/20 text-[#1c1c19] dark:text-[#e5e2dd] placeholder:text-[#74777d] text-sm"
             placeholder="Titolo, autore o ISBN..."
             autoFocus
           />
+          <button
+            onClick={() => setScannerOpen(true)}
+            title="Scansiona ISBN"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[#74777d] hover:text-[#162b1d] dark:hover:text-[#b4cdb8] transition-colors"
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>photo_camera</span>
+          </button>
         </div>
-        <button
-          onClick={() => setScannerOpen(true)}
-          title="Scansiona ISBN"
-          className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-[#ebe8e3] dark:bg-[#2c2c28] rounded-xl hover:bg-[#e5e2dd] transition-colors"
-        >
-          <span className="material-symbols-outlined text-[#162b1d] dark:text-[#b4cdb8]">photo_camera</span>
-        </button>
-        <button
-          onClick={() => search()}
-          disabled={loading || !query.trim()}
-          className="flex-shrink-0 px-5 py-2.5 bg-[#162b1d] text-white rounded-xl text-sm font-semibold disabled:opacity-50 transition-opacity"
-        >
-          {loading ? 'Cerca...' : 'Cerca'}
-        </button>
       </header>
 
       <main className="pt-24 pb-32 max-w-3xl mx-auto">
