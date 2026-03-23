@@ -3,6 +3,7 @@ import { Newsreader, Manrope } from "next/font/google";
 import "./globals.css";
 import { BooksProvider } from "@/context/BooksContext";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { ReadingSessionsProvider } from "@/context/ReadingSessionsContext";
 import BottomNav from "@/components/BottomNav";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -40,8 +41,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className="min-h-full">
         <ThemeProvider>
           <BooksProvider>
-            {children}
-            <BottomNavWrapper />
+            <ReadingSessionsProvider>
+              {children}
+              <BottomNavWrapper />
+            </ReadingSessionsProvider>
           </BooksProvider>
         </ThemeProvider>
         <Analytics />

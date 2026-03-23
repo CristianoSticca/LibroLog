@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useBooks } from '@/context/BooksContext';
+import { useReadingSessions } from '@/context/ReadingSessionsContext';
 import RatingStars from '@/components/RatingStars';
+import SessionLog from '@/components/SessionLog';
 import { BookStatus } from '@/lib/types';
 
 const STATUS_LABELS: Record<BookStatus, string> = {
@@ -18,6 +20,7 @@ export default function LibroDetail() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const { getBook, updateBook, deleteBook } = useBooks();
+  const { addSession } = useReadingSessions();
   const book = getBook(id);
 
   const [currentPage, setCurrentPage] = useState(book?.currentPage ?? 0);
@@ -29,6 +32,7 @@ export default function LibroDetail() {
   const [saved, setSaved] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [pageInput, setPageInput] = useState(String(book?.currentPage ?? 0));
+  const [minutesInput, setMinutesInput] = useState('');
 
   useEffect(() => {
     if (book) {
@@ -56,6 +60,7 @@ export default function LibroDetail() {
 
   function handleSave() {
     if (!book) return;
+    const prevPage = book.currentPage; // catturare PRIMA dell'updateBook ottimistico
     const updates: Partial<typeof book> = { currentPage, rating, notes, status, startDate: startDate || undefined, endDate: endDate || undefined };
     if (status === 'read' && currentPage < book.pages && book.pages > 0) {
       updates.currentPage = book.pages;
@@ -71,6 +76,20 @@ export default function LibroDetail() {
       setEndDate(updates.endDate);
     }
     updateBook(id, updates);
+
+    // Crea sessione di lettura se si sono lette pagine in avanti
+    const newPage = updates.currentPage ?? currentPage;
+    if (newPage > prevPage) {
+      addSession({
+        bookId: id,
+        sessionDate: new Date().toISOString().split('T')[0],
+        startPage: prevPage,
+        endPage: newPage,
+        minutes: minutesInput ? parseInt(minutesInput) : undefined,
+      });
+      setMinutesInput('');
+    }
+
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   }
@@ -192,8 +211,20 @@ export default function LibroDetail() {
             <div className="h-2 w-full bg-[#d0e9d4] rounded-full overflow-hidden">
               <div className="h-full bg-[#162b1d] rounded-full transition-all" style={{ width: `${progress}%` }} />
             </div>
+            {/* Tempo sessione opzionale */}
+            <div className="flex items-center gap-2 mt-3">
+              <span className="text-xs text-[#74777d]">Tempo lettura (opzionale):</span>
+              <input
+                type="number"
+                value={minutesInput}
+                onChange={e => setMinutesInput(e.target.value)}
+                placeholder="min"
+                min={1}
+                className="w-16 px-2 py-1 bg-[#ebe8e3] rounded-lg text-xs text-center font-semibold text-[#162b1d] border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20"
+              />
+            </div>
             {/* Quick +10 */}
-            <div className="flex gap-2 mt-3 flex-wrap">
+            <div className="flex gap-2 mt-2 flex-wrap">
               {[10, 25, 50].map(n => (
                 <button
                   key={n}
@@ -215,6 +246,11 @@ export default function LibroDetail() {
               </button>
             </div>
           </div>
+        )}
+
+        {/* Sessioni di lettura */}
+        {(status === 'reading' || status === 'read') && (
+          <SessionLog bookId={id} />
         )}
 
         {/* Date */}

@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useBooks } from '@/context/BooksContext';
 import { GoogleBooksVolume } from '@/lib/types';
+import IsbnScanner from '@/components/IsbnScanner';
 
 function getCover(vol: GoogleBooksVolume): string {
   const thumb = vol.volumeInfo.imageLinks?.thumbnail || vol.volumeInfo.imageLinks?.smallThumbnail || '';
@@ -18,16 +19,18 @@ export default function Ricerca() {
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const [adding, setAdding] = useState<string | null>(null);
+  const [scannerOpen, setScannerOpen] = useState(false);
 
-  const search = useCallback(async () => {
-    if (!query.trim()) return;
+  const search = useCallback(async (overrideQuery?: string) => {
+    const q = overrideQuery ?? query;
+    if (!q.trim()) return;
     setLoading(true);
     setSearched(true);
     try {
       const apiKey = process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY;
       const keyParam = apiKey ? `&key=${apiKey}` : '';
       const res = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=20&langRestrict=it,en${keyParam}`
+        `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&maxResults=20&langRestrict=it,en${keyParam}`
       );
       const data = await res.json();
       setResults(data.items || []);
@@ -37,6 +40,12 @@ export default function Ricerca() {
       setLoading(false);
     }
   }, [query]);
+
+  function handleScan(isbn: string) {
+    setQuery(isbn);
+    setScannerOpen(false);
+    search(isbn);
+  }
 
   function isInLibrary(googleId: string) {
     return books.some(b => b.googleBooksId === googleId);
@@ -73,6 +82,11 @@ export default function Ricerca() {
 
   return (
     <>
+      {/* Scanner ISBN */}
+      {scannerOpen && (
+        <IsbnScanner onScan={handleScan} onClose={() => setScannerOpen(false)} />
+      )}
+
       <header className="fixed top-0 w-full flex items-center gap-4 px-6 py-4 bg-[#fcf9f4]/80 dark:bg-[#121210]/80 backdrop-blur-md z-50">
         <span className="font-serif italic text-2xl text-[#162b1d] dark:text-[#b4cdb8] flex-shrink-0">LibroLog</span>
         <div className="relative flex-1 max-w-lg">
@@ -87,7 +101,14 @@ export default function Ricerca() {
           />
         </div>
         <button
-          onClick={search}
+          onClick={() => setScannerOpen(true)}
+          title="Scansiona ISBN"
+          className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-[#ebe8e3] rounded-xl hover:bg-[#e5e2dd] transition-colors"
+        >
+          <span className="material-symbols-outlined text-[#162b1d]">photo_camera</span>
+        </button>
+        <button
+          onClick={() => search()}
           disabled={loading || !query.trim()}
           className="flex-shrink-0 px-5 py-2.5 bg-[#162b1d] text-white rounded-xl text-sm font-semibold disabled:opacity-50 transition-opacity"
         >
