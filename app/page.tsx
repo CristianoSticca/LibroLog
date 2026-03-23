@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useBooks } from '@/context/BooksContext';
 import { useRouter } from 'next/navigation';
+import StreakBadge from '@/components/StreakBadge';
 
 export default function Dashboard() {
   const { books, booksByStatus, loading, user } = useBooks();
@@ -58,6 +59,9 @@ export default function Dashboard() {
               <span className="text-xs uppercase tracking-widest text-[#95ad9a]">Pagine totali</span>
               <span className="font-serif text-5xl font-bold text-white">{totalPages.toLocaleString('it-IT')}</span>
             </div>
+          </div>
+          <div className="mt-4">
+            <StreakBadge />
           </div>
         </section>
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Newsreader, Manrope } from "next/font/google";
 import "./globals.css";
 import { BooksProvider } from "@/context/BooksContext";
+import { ReadingSessionsProvider } from "@/context/ReadingSessionsContext";
 import BottomNav from "@/components/BottomNav";
 
 const newsreader = Newsreader({
@@ -37,8 +38,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body className="min-h-full bg-[#fcf9f4] text-[#1c1c19]">
         <BooksProvider>
-          {children}
-          <BottomNavWrapper />
+          <ReadingSessionsProvider>
+            {children}
+            <BottomNavWrapper />
+          </ReadingSessionsProvider>
         </BooksProvider>
       </body>
     </html>

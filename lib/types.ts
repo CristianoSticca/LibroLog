@@ -37,6 +37,17 @@ export interface GoogleBooksVolume {
   };
 }
 
+export interface ReadingSession {
+  id: string;
+  bookId: string;
+  sessionDate: string;  // YYYY-MM-DD
+  startPage: number;
+  endPage: number;
+  pagesRead: number;    // endPage - startPage
+  minutes?: number;
+  createdAt: string;
+}
+
 export interface OpenLibraryDoc {
   key: string;
   title: string;

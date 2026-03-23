@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useEffect } from 'react';
 import { useBooks } from '@/context/BooksContext';
+import { useReadingSessions } from '@/context/ReadingSessionsContext';
 import RatingStars from '@/components/RatingStars';
 import Link from 'next/link';
 import { getSettings } from '@/lib/settings';
@@ -14,6 +15,7 @@ const GENRE_COLORS = ['#2c4132', '#4e6073', '#cfe2f9', '#392117', '#d0e9d4', '#c
 
 export default function Statistiche() {
   const { books } = useBooks();
+  const { avgPagesPerHour } = useReadingSessions();
   const [annualGoal, setAnnualGoal] = useState(12);
   const [dailyPagesGoal, setDailyPagesGoal] = useState(30);
 
@@ -297,6 +299,36 @@ export default function Statistiche() {
                 : `Mancano ${dailyPagesGoal - stats.avgPagesPerDay} pag/giorno all'obiettivo`}
             </p>
           </div>
+
+          {/* Velocità di lettura */}
+          {(() => {
+            const pph = avgPagesPerHour();
+            return (
+              <div className="md:col-span-6 bg-[#f6f3ee] rounded-2xl p-6">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <span className="text-xs uppercase tracking-widest text-[#4e6073] block mb-1">Velocità di lettura</span>
+                    <div className="flex items-end gap-2">
+                      {pph !== null ? (
+                        <>
+                          <span className="font-serif text-4xl font-bold text-[#162b1d]">{pph}</span>
+                          <span className="text-sm text-[#4e6073] mb-1">pag/ora</span>
+                        </>
+                      ) : (
+                        <span className="font-serif text-2xl text-[#74777d]">N/D</span>
+                      )}
+                    </div>
+                  </div>
+                  <span className="material-symbols-outlined text-[#4e6073] text-3xl">speed</span>
+                </div>
+                <p className="text-xs text-[#74777d]">
+                  {pph !== null
+                    ? 'Media calcolata sulle sessioni con tempo registrato'
+                    : 'Registra il tempo delle sessioni per calcolare la velocità'}
+                </p>
+              </div>
+            );
+          })()}
 
           {/* Autori più letti */}
           {stats.topAuthors.length > 0 && (
