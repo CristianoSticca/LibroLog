@@ -2,7 +2,7 @@
 
 Il tuo diario di lettura personale. Cerca libri, tieni traccia dei progressi, registra le sessioni e visualizza le tue statistiche.
 
-**Live:** [libro-log-beryl.vercel.app](https://libro-log-beryl.vercel.app)
+**Live:** [librolog.cristianosticca.com](https://librolog.cristianosticca.com)
 
 ---
 
