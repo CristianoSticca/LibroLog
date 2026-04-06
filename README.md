@@ -23,7 +23,7 @@ Il tuo diario di lettura personale. Cerca libri, tieni traccia dei progressi, re
 ### Ricerca e scoperta
 - Ricerca per titolo, autore o ISBN tramite Google Books API
 - **Scansione ISBN via fotocamera**: usa `BarcodeDetector` nativo (Chrome/Android) con fallback `@zxing/browser` per altri browser
-- **Classifiche italiane** (Il Sole 24 Ore / GfK): 7 categorie settimanali aggiornate ogni ora — Classifica Generale, Narrativa Italiana, Narrativa Straniera, Saggistica, Tascabili, Ragazzi, Varia. Card verticali con badge posizione, settimane in classifica e variazione (New Entry, In ascesa, ecc.). Se la fonte non è disponibile la sezione viene nascosta silenziosamente
+- **Classifiche italiane** (La Feltrinelli): 15 categorie aggiornate ogni ora, selezionabili per settimana o mese — Generale, Narrativa Italiana, Gialli/Thriller, Fantasy, Società e politica, Filosofia, Biografie, Educazione, Psicologia, Informatica, Scienze, Sport, Storia, Classici, Salute. Top 20 per categoria con badge posizione e variazione (In ascesa, In discesa, Stabile). Se la fonte non è disponibile la sezione viene nascosta silenziosamente
 - **Link acquisto Amazon** su ogni libro, sia nelle classifiche che nei risultati di ricerca e nel dettaglio
 - Aggiunta diretta del libro con stato "Inizia a leggere" o "Da leggere"
 
@@ -75,7 +75,7 @@ Il tuo diario di lettura personale. Cerca libri, tieni traccia dei progressi, re
 | Backend / Auth | Supabase (PostgreSQL + Auth) |
 | Deploy | Vercel + Vercel Analytics |
 | Design | Google Stitch |
-| Classifiche libri | Il Sole 24 Ore / GfK (Next.js API route proxy) |
+| Classifiche libri | La Feltrinelli (Next.js API route proxy, cache 1h) |
 | Dati libri | Google Books API |
 | Scanner ISBN | BarcodeDetector API + @zxing/browser (fallback) |
 
@@ -195,12 +195,12 @@ app/
   login/page.tsx             # Login magic link
   auth/confirm/route.ts      # Callback autenticazione
   libreria/page.tsx          # Libreria con filtri e ricerca
-  ricerca/page.tsx           # Ricerca + classifiche Il Sole 24 Ore
+  ricerca/page.tsx           # Ricerca + classifiche La Feltrinelli
   statistiche/page.tsx       # Statistiche di lettura
   libro/[id]/page.tsx        # Dettaglio e modifica libro
   impostazioni/page.tsx      # Impostazioni e obiettivi
   api/
-    bestsellers/route.ts     # Proxy classifiche Il Sole 24 Ore (cache 1h)
+    bestsellers/route.ts     # Proxy classifiche La Feltrinelli (cache 1h, 15 categorie)
 components/
   BottomNav.tsx              # Navigazione inferiore
   BookCard.tsx               # Card libro con copertina

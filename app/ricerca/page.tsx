@@ -28,19 +28,28 @@ export default function Ricerca() {
 
   const [categories, setCategories] = useState<BestsellerCategory[] | null>(null);
   const [activeCategory, setActiveCategory] = useState(0);
-  const categoryCache = useRef<BestsellerCategory[] | null>(null);
+  const [period, setPeriod] = useState<'week' | 'month'>('week');
+  const [loadingRankings, setLoadingRankings] = useState(false);
+  const categoryCache = useRef<Record<string, BestsellerCategory[]>>({});
 
   useEffect(() => {
-    fetch('/api/bestsellers')
+    if (categoryCache.current[period]) {
+      setCategories(categoryCache.current[period]);
+      return;
+    }
+    setLoadingRankings(true);
+    setCategories(null);
+    fetch(`/api/bestsellers?period=${period}`)
       .then(r => r.ok ? r.json() : null)
       .then((data: BestsellerCategory[] | null) => {
         if (Array.isArray(data) && data.length > 0) {
-          categoryCache.current = data;
+          categoryCache.current[period] = data;
           setCategories(data);
         }
       })
-      .catch(() => {});
-  }, []);
+      .catch(() => {})
+      .finally(() => setLoadingRankings(false));
+  }, [period]);
 
   const search = useCallback(async (overrideQuery?: string) => {
     const q = overrideQuery ?? query;
@@ -221,14 +230,13 @@ export default function Ricerca() {
           <p className="text-sm text-[#4e6073] mt-0.5 truncate">{book.author || 'Autore sconosciuto'}</p>
           <div className="flex items-center gap-2 mt-1 flex-wrap">
             {book.publisher && <span className="text-xs text-[#74777d]">{book.publisher}</span>}
-            {book.weeks > 0 && <span className="text-xs text-[#74777d]">· {book.weeks} {book.weeks === 1 ? 'sett.' : 'sett.'} in classifica</span>}
             {book.variation && book.variation !== 'Stabile' && (
               <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
-                book.variation.toLowerCase().includes('new') || book.variation === 'Rientro'
-                  ? 'bg-[#d0e9d4] text-[#162b1d]'
-                  : book.variation === 'In ascesa'
+                book.variation === 'In ascesa'
                   ? 'bg-[#cfe2f9] text-[#526478]'
-                  : 'bg-[#ebe8e3] text-[#74777d]'
+                  : book.variation === 'In discesa'
+                  ? 'bg-[#f9e0d0] text-[#7a4030]'
+                  : 'bg-[#d0e9d4] text-[#162b1d]'
               }`}>
                 {book.variation}
               </span>
@@ -307,36 +315,68 @@ export default function Ricerca() {
       <main className="pt-24 pb-32 max-w-3xl mx-auto">
 
         {/* Classifiche — visibili solo quando non si sta cercando */}
-        {!searched && categories && (
+        {!searched && (categories || loadingRankings) && (
           <div className="mt-4">
-            <div className="px-6 flex items-baseline gap-2 mb-3">
-              <h2 className="font-serif text-xl text-[#162b1d] dark:text-[#b4cdb8]">Classifiche</h2>
-              <span className="text-xs text-[#74777d]">Il Sole 24 Ore · GfK</span>
-            </div>
-
-            {/* Pill categorie */}
-            <div className="flex gap-2 overflow-x-auto px-6 pb-2 scrollbar-hide">
-              {categories.map((cat, i) => (
+            <div className="px-6 flex items-center justify-between mb-3">
+              <div className="flex items-baseline gap-2">
+                <h2 className="font-serif text-xl text-[#162b1d] dark:text-[#b4cdb8]">Classifiche</h2>
+                <span className="text-xs text-[#74777d]">La Feltrinelli</span>
+              </div>
+              <div className="flex gap-1 bg-[#ebe8e3] dark:bg-[#2c2c28] rounded-full p-0.5">
                 <button
-                  key={cat.slug}
-                  onClick={() => setActiveCategory(i)}
-                  className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    activeCategory === i
+                  onClick={() => { setPeriod('week'); setActiveCategory(0); }}
+                  className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                    period === 'week'
                       ? 'bg-[#162b1d] text-white'
-                      : 'bg-[#ebe8e3] dark:bg-[#2c2c28] text-[#43474c] dark:text-[#95ad9a] hover:bg-[#dedad4] dark:hover:bg-[#363630]'
+                      : 'text-[#43474c] dark:text-[#95ad9a]'
                   }`}
                 >
-                  {cat.label}
+                  Settimana
                 </button>
-              ))}
+                <button
+                  onClick={() => { setPeriod('month'); setActiveCategory(0); }}
+                  className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                    period === 'month'
+                      ? 'bg-[#162b1d] text-white'
+                      : 'text-[#43474c] dark:text-[#95ad9a]'
+                  }`}
+                >
+                  Mese
+                </button>
+              </div>
             </div>
 
-            {/* Lista verticale */}
-            <div className="px-6 mt-4 space-y-3">
-              {currentBooks.map(book => (
-                <BestsellerCard key={book.isbn} book={book} />
-              ))}
-            </div>
+            {loadingRankings ? (
+              <div className="flex justify-center py-12">
+                <div className="w-8 h-8 border-2 border-[#162b1d] border-t-transparent rounded-full animate-spin" />
+              </div>
+            ) : categories && (
+              <>
+                {/* Pill categorie */}
+                <div className="flex gap-2 overflow-x-auto px-6 pb-2 scrollbar-hide">
+                  {categories.map((cat, i) => (
+                    <button
+                      key={cat.slug}
+                      onClick={() => setActiveCategory(i)}
+                      className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                        activeCategory === i
+                          ? 'bg-[#162b1d] text-white'
+                          : 'bg-[#ebe8e3] dark:bg-[#2c2c28] text-[#43474c] dark:text-[#95ad9a] hover:bg-[#dedad4] dark:hover:bg-[#363630]'
+                      }`}
+                    >
+                      {cat.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Lista verticale */}
+                <div className="px-6 mt-4 space-y-3">
+                  {currentBooks.map(book => (
+                    <BestsellerCard key={book.isbn} book={book} />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         )}
 
