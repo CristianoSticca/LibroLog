@@ -48,6 +48,32 @@ export interface ReadingSession {
   createdAt: string;
 }
 
+export type AnnotationType = 'highlight' | 'text' | 'freehand';
+
+export interface Annotation {
+  id: string;
+  type: AnnotationType;
+  x: number;
+  y: number;
+  width?: number;
+  height?: number;
+  text?: string;
+  points?: number[];
+  color: string;
+}
+
+export interface BookPhoto {
+  id: string;
+  bookId: string;
+  userId: string;
+  storageUrl: string;
+  storagePath: string;
+  note?: string;
+  pageNumber?: number;
+  annotations: Annotation[];
+  createdAt: string;
+}
+
 export interface OpenLibraryDoc {
   key: string;
   title: string;

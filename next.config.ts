@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "*.googleapis.com" },
       { protocol: "https", hostname: "covers.openlibrary.org" },
       { protocol: "https", hostname: "www.lafeltrinelli.it" },
+      { protocol: "https", hostname: "*.supabase.co" },
     ],
   },
 };
