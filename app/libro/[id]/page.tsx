@@ -42,12 +42,14 @@ export default function LibroDetail() {
   const [saved, setSaved] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [pageInput, setPageInput] = useState(String(book?.currentPage ?? 0));
+  const [totalPagesInput, setTotalPagesInput] = useState(String(book?.pages ?? 0));
   const [minutesInput, setMinutesInput] = useState('');
 
   useEffect(() => {
     if (book) {
       setCurrentPage(book.currentPage);
       setPageInput(String(book.currentPage));
+      setTotalPagesInput(String(book.pages ?? 0));
       setRating(book.rating ?? 0);
       setNotes(book.notes ?? '');
       setStatus(book.status);
@@ -71,11 +73,12 @@ export default function LibroDetail() {
   function handleSave() {
     if (!book) return;
     const prevPage = book.currentPage;
-    const updates: Partial<typeof book> = { currentPage, rating, notes, status, startDate: startDate || undefined, endDate: endDate || undefined };
-    if (status === 'read' && currentPage < book.pages && book.pages > 0) {
-      updates.currentPage = book.pages;
-      setCurrentPage(book.pages);
-      setPageInput(String(book.pages));
+    const newTotalPages = parseInt(totalPagesInput) || 0;
+    const updates: Partial<typeof book> = { currentPage, rating, notes, status, pages: newTotalPages, startDate: startDate || undefined, endDate: endDate || undefined };
+    if (status === 'read' && currentPage < newTotalPages && newTotalPages > 0) {
+      updates.currentPage = newTotalPages;
+      setCurrentPage(newTotalPages);
+      setPageInput(String(newTotalPages));
     }
     if (status === 'reading' && !startDate) {
       updates.startDate = new Date().toISOString().split('T')[0];
@@ -111,8 +114,9 @@ export default function LibroDetail() {
   function handlePageChange(val: string) {
     setPageInput(val);
     const n = parseInt(val);
+    const total = parseInt(totalPagesInput) || 0;
     if (!isNaN(n) && n >= 0) {
-      const capped = book && book.pages > 0 ? Math.min(n, book.pages) : n;
+      const capped = total > 0 ? Math.min(n, total) : n;
       setCurrentPage(capped);
     }
   }
@@ -226,27 +230,41 @@ export default function LibroDetail() {
           </div>
 
           {/* Progresso pagine */}
-          {(status === 'reading' || status === 'read') && book.pages > 0 && (
+          {(status === 'reading' || status === 'read') && (
             <div className="bg-[#f6f3ee] dark:bg-[#1c1c19] rounded-2xl p-5 mb-4">
               <h3 className="text-xs uppercase tracking-widest text-[#4e6073] mb-3">Progresso</h3>
+              {/* Totale pagine editabile */}
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-xs text-[#74777d]">Totale pagine:</span>
+                <input
+                  type="number"
+                  value={totalPagesInput}
+                  onChange={e => setTotalPagesInput(e.target.value)}
+                  min={0}
+                  placeholder="?"
+                  className="w-20 px-2 py-1 bg-[#ebe8e3] rounded-lg text-xs text-center font-semibold text-[#162b1d] dark:text-[#b4cdb8] border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20"
+                />
+              </div>
               <div className="flex items-center gap-4 mb-3">
                 <div className="flex items-center gap-2 flex-1">
-                  <span className="text-sm text-[#43474c]">Pagina</span>
+                  <span className="text-sm text-[#74777d]">Pagina</span>
                   <input
                     type="number"
                     value={pageInput}
                     onChange={e => handlePageChange(e.target.value)}
                     min={0}
-                    max={book.pages}
+                    max={parseInt(totalPagesInput) || undefined}
                     className="w-20 px-3 py-1.5 bg-[#ebe8e3] rounded-lg text-center font-bold text-[#162b1d] dark:text-[#b4cdb8] border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20 text-sm"
                   />
-                  <span className="text-sm text-[#74777d]">di {book.pages}</span>
+                  {parseInt(totalPagesInput) > 0 && <span className="text-sm text-[#74777d]">di {totalPagesInput}</span>}
                 </div>
-                <span className="font-serif text-2xl font-bold text-[#162b1d] dark:text-[#b4cdb8]">{progress}%</span>
+                {parseInt(totalPagesInput) > 0 && <span className="font-serif text-2xl font-bold text-[#162b1d] dark:text-[#b4cdb8]">{progress}%</span>}
               </div>
-              <div className="h-2 w-full bg-[#d0e9d4] rounded-full overflow-hidden">
-                <div className="h-full bg-[#162b1d] rounded-full transition-all" style={{ width: `${progress}%` }} />
-              </div>
+              {parseInt(totalPagesInput) > 0 && (
+                <div className="h-2 w-full bg-[#d0e9d4] rounded-full overflow-hidden">
+                  <div className="h-full bg-[#162b1d] rounded-full transition-all" style={{ width: `${Math.round((currentPage / parseInt(totalPagesInput)) * 100)}%` }} />
+                </div>
+              )}
               <div className="flex items-center gap-2 mt-3">
                 <span className="text-xs text-[#74777d]">Tempo lettura (opzionale):</span>
                 <input
@@ -263,7 +281,8 @@ export default function LibroDetail() {
                   <button
                     key={n}
                     onClick={() => {
-                      const next = Math.min(currentPage + n, book.pages);
+                      const total = parseInt(totalPagesInput) || 0;
+                      const next = total > 0 ? Math.min(currentPage + n, total) : currentPage + n;
                       setCurrentPage(next);
                       setPageInput(String(next));
                     }}
@@ -273,7 +292,11 @@ export default function LibroDetail() {
                   </button>
                 ))}
                 <button
-                  onClick={() => { setCurrentPage(book.pages); setPageInput(String(book.pages)); setStatus('read'); }}
+                  onClick={() => {
+                    const total = parseInt(totalPagesInput) || 0;
+                    if (total > 0) { setCurrentPage(total); setPageInput(String(total)); }
+                    setStatus('read');
+                  }}
                   className="px-3 py-1 bg-[#d0e9d4] text-[#162b1d] dark:text-[#b4cdb8] rounded-lg text-xs font-semibold hover:bg-[#b4cdb8] transition-colors"
                 >
                   Finito! ✓
@@ -373,27 +396,41 @@ export default function LibroDetail() {
       {activeTab === 'sessioni' && (
         <div className="pt-[120px] pb-32 px-6 max-w-2xl mx-auto">
           {/* Progresso pagine — ripetuto qui per aggiornare le pagine vicino alle sessioni */}
-          {(status === 'reading' || status === 'read') && book.pages > 0 && (
+          {(status === 'reading' || status === 'read') && (
             <div className="bg-[#f6f3ee] dark:bg-[#1c1c19] rounded-2xl p-5 mb-4">
               <h3 className="text-xs uppercase tracking-widest text-[#4e6073] mb-3">Progresso</h3>
+              {/* Totale pagine editabile */}
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-xs text-[#74777d]">Totale pagine:</span>
+                <input
+                  type="number"
+                  value={totalPagesInput}
+                  onChange={e => setTotalPagesInput(e.target.value)}
+                  min={0}
+                  placeholder="?"
+                  className="w-20 px-2 py-1 bg-[#ebe8e3] rounded-lg text-xs text-center font-semibold text-[#162b1d] dark:text-[#b4cdb8] border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20"
+                />
+              </div>
               <div className="flex items-center gap-4 mb-3">
                 <div className="flex items-center gap-2 flex-1">
-                  <span className="text-sm text-[#43474c]">Pagina</span>
+                  <span className="text-sm text-[#74777d]">Pagina</span>
                   <input
                     type="number"
                     value={pageInput}
                     onChange={e => handlePageChange(e.target.value)}
                     min={0}
-                    max={book.pages}
+                    max={parseInt(totalPagesInput) || undefined}
                     className="w-20 px-3 py-1.5 bg-[#ebe8e3] rounded-lg text-center font-bold text-[#162b1d] dark:text-[#b4cdb8] border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20 text-sm"
                   />
-                  <span className="text-sm text-[#74777d]">di {book.pages}</span>
+                  {parseInt(totalPagesInput) > 0 && <span className="text-sm text-[#74777d]">di {totalPagesInput}</span>}
                 </div>
-                <span className="font-serif text-2xl font-bold text-[#162b1d] dark:text-[#b4cdb8]">{progress}%</span>
+                {parseInt(totalPagesInput) > 0 && <span className="font-serif text-2xl font-bold text-[#162b1d] dark:text-[#b4cdb8]">{progress}%</span>}
               </div>
-              <div className="h-2 w-full bg-[#d0e9d4] rounded-full overflow-hidden">
-                <div className="h-full bg-[#162b1d] rounded-full transition-all" style={{ width: `${progress}%` }} />
-              </div>
+              {parseInt(totalPagesInput) > 0 && (
+                <div className="h-2 w-full bg-[#d0e9d4] rounded-full overflow-hidden">
+                  <div className="h-full bg-[#162b1d] rounded-full transition-all" style={{ width: `${Math.round((currentPage / parseInt(totalPagesInput)) * 100)}%` }} />
+                </div>
+              )}
               <div className="flex items-center gap-2 mt-3">
                 <span className="text-xs text-[#74777d]">Tempo lettura (opzionale):</span>
                 <input
@@ -410,7 +447,8 @@ export default function LibroDetail() {
                   <button
                     key={n}
                     onClick={() => {
-                      const next = Math.min(currentPage + n, book.pages);
+                      const total = parseInt(totalPagesInput) || 0;
+                      const next = total > 0 ? Math.min(currentPage + n, total) : currentPage + n;
                       setCurrentPage(next);
                       setPageInput(String(next));
                     }}
@@ -420,7 +458,11 @@ export default function LibroDetail() {
                   </button>
                 ))}
                 <button
-                  onClick={() => { setCurrentPage(book.pages); setPageInput(String(book.pages)); setStatus('read'); }}
+                  onClick={() => {
+                    const total = parseInt(totalPagesInput) || 0;
+                    if (total > 0) { setCurrentPage(total); setPageInput(String(total)); }
+                    setStatus('read');
+                  }}
                   className="px-3 py-1 bg-[#d0e9d4] text-[#162b1d] dark:text-[#b4cdb8] rounded-lg text-xs font-semibold hover:bg-[#b4cdb8] transition-colors"
                 >
                   Finito! ✓
