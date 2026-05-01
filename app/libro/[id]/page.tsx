@@ -125,7 +125,7 @@ export default function LibroDetail() {
           <span className="material-symbols-outlined text-[#162b1d] dark:text-[#b4cdb8]">arrow_back</span>
         </button>
         <span className="font-serif italic text-xl text-[#162b1d] dark:text-[#b4cdb8] flex-1 truncate">{book.title}</span>
-        {activeTab === 'dettagli' && (
+        {(activeTab === 'dettagli' || activeTab === 'sessioni') && (
           <button
             onClick={handleSave}
             className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
@@ -372,6 +372,62 @@ export default function LibroDetail() {
       {/* Tab: Sessioni */}
       {activeTab === 'sessioni' && (
         <div className="pt-[120px] pb-32 px-6 max-w-2xl mx-auto">
+          {/* Progresso pagine — ripetuto qui per aggiornare le pagine vicino alle sessioni */}
+          {(status === 'reading' || status === 'read') && book.pages > 0 && (
+            <div className="bg-[#f6f3ee] dark:bg-[#1c1c19] rounded-2xl p-5 mb-4">
+              <h3 className="text-xs uppercase tracking-widest text-[#4e6073] mb-3">Progresso</h3>
+              <div className="flex items-center gap-4 mb-3">
+                <div className="flex items-center gap-2 flex-1">
+                  <span className="text-sm text-[#43474c]">Pagina</span>
+                  <input
+                    type="number"
+                    value={pageInput}
+                    onChange={e => handlePageChange(e.target.value)}
+                    min={0}
+                    max={book.pages}
+                    className="w-20 px-3 py-1.5 bg-[#ebe8e3] rounded-lg text-center font-bold text-[#162b1d] dark:text-[#b4cdb8] border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20 text-sm"
+                  />
+                  <span className="text-sm text-[#74777d]">di {book.pages}</span>
+                </div>
+                <span className="font-serif text-2xl font-bold text-[#162b1d] dark:text-[#b4cdb8]">{progress}%</span>
+              </div>
+              <div className="h-2 w-full bg-[#d0e9d4] rounded-full overflow-hidden">
+                <div className="h-full bg-[#162b1d] rounded-full transition-all" style={{ width: `${progress}%` }} />
+              </div>
+              <div className="flex items-center gap-2 mt-3">
+                <span className="text-xs text-[#74777d]">Tempo lettura (opzionale):</span>
+                <input
+                  type="number"
+                  value={minutesInput}
+                  onChange={e => setMinutesInput(e.target.value)}
+                  placeholder="min"
+                  min={1}
+                  className="w-16 px-2 py-1 bg-[#ebe8e3] rounded-lg text-xs text-center font-semibold text-[#162b1d] border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20"
+                />
+              </div>
+              <div className="flex gap-2 mt-2 flex-wrap">
+                {[10, 25, 50].map(n => (
+                  <button
+                    key={n}
+                    onClick={() => {
+                      const next = Math.min(currentPage + n, book.pages);
+                      setCurrentPage(next);
+                      setPageInput(String(next));
+                    }}
+                    className="px-3 py-1 bg-[#ebe8e3] text-[#43474c] rounded-lg text-xs font-semibold hover:bg-[#e5e2dd] transition-colors"
+                  >
+                    +{n} pag.
+                  </button>
+                ))}
+                <button
+                  onClick={() => { setCurrentPage(book.pages); setPageInput(String(book.pages)); setStatus('read'); }}
+                  className="px-3 py-1 bg-[#d0e9d4] text-[#162b1d] dark:text-[#b4cdb8] rounded-lg text-xs font-semibold hover:bg-[#b4cdb8] transition-colors"
+                >
+                  Finito! ✓
+                </button>
+              </div>
+            </div>
+          )}
           <SessionLog bookId={id} />
         </div>
       )}
