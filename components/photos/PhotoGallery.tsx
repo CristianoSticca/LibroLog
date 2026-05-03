@@ -13,7 +13,8 @@ interface Props {
 export default function PhotoGallery({ bookId }: Props) {
   const { loadPhotos, addPhoto, deletePhoto, getPhotosForBook, loading, uploading } = useBookPhotos();
   const [selectedPhoto, setSelectedPhoto] = useState<BookPhoto | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
+  const cameraRef = useRef<HTMLInputElement>(null);
+  const galleryRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     loadPhotos(bookId);
@@ -43,30 +44,43 @@ export default function PhotoGallery({ bookId }: Props) {
   return (
     <>
       <div className="px-4 pt-4 pb-32">
-        {/* Upload button */}
-        <button
-          onClick={() => fileRef.current?.click()}
-          disabled={uploading}
-          className="w-full flex items-center justify-center gap-2 py-3 mb-4 rounded-2xl border-2 border-dashed border-[#b4cdb8] dark:border-[#2e3d30] text-[#162b1d] dark:text-[#b4cdb8] font-semibold text-sm transition-colors hover:bg-[#eaf0eb] dark:hover:bg-[#1a261c] disabled:opacity-60"
-        >
-          {uploading ? (
-            <>
-              <span className="material-symbols-outlined text-xl animate-spin">progress_activity</span>
-              Caricamento...
-            </>
-          ) : (
-            <>
+        {/* Upload buttons */}
+        {uploading ? (
+          <div className="w-full flex items-center justify-center gap-2 py-3 mb-4 rounded-2xl border-2 border-dashed border-[#b4cdb8] dark:border-[#2e3d30] text-[#162b1d] dark:text-[#b4cdb8] font-semibold text-sm opacity-60">
+            <span className="material-symbols-outlined text-xl animate-spin">progress_activity</span>
+            Caricamento...
+          </div>
+        ) : (
+          <div className="flex gap-2 mb-4">
+            <button
+              onClick={() => cameraRef.current?.click()}
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl border-2 border-dashed border-[#b4cdb8] dark:border-[#2e3d30] text-[#162b1d] dark:text-[#b4cdb8] font-semibold text-sm transition-colors hover:bg-[#eaf0eb] dark:hover:bg-[#1a261c]"
+            >
               <span className="material-symbols-outlined text-xl">add_a_photo</span>
-              Aggiungi foto
-            </>
-          )}
-        </button>
+              Fotocamera
+            </button>
+            <button
+              onClick={() => galleryRef.current?.click()}
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl border-2 border-dashed border-[#b4cdb8] dark:border-[#2e3d30] text-[#162b1d] dark:text-[#b4cdb8] font-semibold text-sm transition-colors hover:bg-[#eaf0eb] dark:hover:bg-[#1a261c]"
+            >
+              <span className="material-symbols-outlined text-xl">photo_library</span>
+              Galleria
+            </button>
+          </div>
+        )}
 
         <input
-          ref={fileRef}
+          ref={cameraRef}
           type="file"
           accept="image/*"
           capture="environment"
+          className="hidden"
+          onChange={handleFileChange}
+        />
+        <input
+          ref={galleryRef}
+          type="file"
+          accept="image/*"
           className="hidden"
           onChange={handleFileChange}
         />
