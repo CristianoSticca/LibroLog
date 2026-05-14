@@ -138,6 +138,9 @@ create policy "Users manage their own books" on books
   for all using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
 
+-- Required explicit grant for Supabase Data API (PostgREST) access
+grant select, insert, update, delete on table public.books to authenticated;
+
 -- Tabella sessioni di lettura
 create table reading_sessions (
   id text primary key,
@@ -156,6 +159,31 @@ alter table reading_sessions enable row level security;
 create policy "Users manage their own sessions" on reading_sessions
   for all using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
+
+-- Required explicit grant for Supabase Data API (PostgREST) access
+grant select, insert, update, delete on table public.reading_sessions to authenticated;
+
+-- Tabella foto dei libri
+create table book_photos (
+  id text primary key,
+  user_id uuid references auth.users(id) on delete cascade not null,
+  book_id text references books(id) on delete cascade not null,
+  storage_path text not null,
+  storage_url text not null,
+  note text,
+  page_number integer,
+  annotations jsonb default '[]'::jsonb,
+  created_at timestamptz default now()
+);
+
+alter table book_photos enable row level security;
+
+create policy "Users manage their own photos" on book_photos
+  for all using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
+
+-- Required explicit grant for Supabase Data API (PostgREST) access
+grant select, insert, update, delete on table public.book_photos to authenticated;
 ```
 
 In **Authentication → URL Configuration**:
