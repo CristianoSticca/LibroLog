@@ -17,6 +17,15 @@ export default function Dashboard() {
     );
   }
 
+  if (!user) {
+    router.replace('/welcome');
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-10 h-10 border-2 border-[#162b1d] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
   const reading = booksByStatus('reading');
   const readBooks = booksByStatus('read');
   const currentYear = new Date().getFullYear();
