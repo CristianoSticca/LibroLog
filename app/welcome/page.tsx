@@ -53,6 +53,17 @@ const T = {
       cta: 'Inizia a leggere meglio',
       note: 'Gratis. Nessun abbonamento. Per sempre.',
     },
+    waitlist: {
+      label: 'Accesso su invito',
+      title: 'Vuoi entrare?',
+      sub: 'LibroLog è ancora in accesso limitato. Lascia la tua email e ti avviso non appena apriamo i prossimi posti.',
+      placeholder: 'la-tua@email.it',
+      cta: 'Unisciti alla lista',
+      loading: 'Un momento…',
+      success: '✓ Sei in lista! Ti avviseremo presto.',
+      duplicate: '✓ Sei già in lista!',
+      error: 'Qualcosa è andato storto, riprova.',
+    },
     footer: {
       tagline: 'Il tuo diario di lettura personale.',
       made: 'Fatto con ♥ da',
@@ -103,6 +114,17 @@ const T = {
       android: ['Open Chrome', 'Tap the menu (⋮) top right', 'Select "Add to Home Screen"', 'Confirm with "Add"'],
       cta: 'Start reading better',
       note: 'Free. No subscription. Forever.',
+    },
+    waitlist: {
+      label: 'Invite only',
+      title: 'Want in?',
+      sub: `LibroLog is still in limited access. Leave your email and we'll notify you as soon as new spots open.`,
+      placeholder: 'your@email.com',
+      cta: 'Join the waitlist',
+      loading: 'One moment…',
+      success: `✓ You're on the list! We'll be in touch soon.`,
+      duplicate: `✓ You're already on the list!`,
+      error: 'Something went wrong, please try again.',
     },
     footer: {
       tagline: 'Your personal reading journal.',
@@ -352,6 +374,8 @@ export default function WelcomePage() {
   const [lang, setLang] = useState<Lang>('it');
   const [activeTab, setActiveTab] = useState(0);
   const [installTab, setInstallTab] = useState<'ios' | 'android'>('ios');
+  const [waitlistEmail, setWaitlistEmail] = useState('');
+  const [waitlistStatus, setWaitlistStatus] = useState<'idle' | 'loading' | 'success' | 'duplicate' | 'error'>('idle');
   const featuresRef = useRef<HTMLElement>(null);
   const t = T[lang];
 
@@ -359,6 +383,27 @@ export default function WelcomePage() {
   const mockupReveal = useReveal();
   const howReveal = useReveal();
   const installReveal = useReveal();
+  const waitlistReveal = useReveal();
+
+  async function handleWaitlist(e: React.FormEvent) {
+    e.preventDefault();
+    if (!waitlistEmail) return;
+    setWaitlistStatus('loading');
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: waitlistEmail }),
+      });
+      const data = await res.json();
+      if (res.status === 201) setWaitlistStatus('success');
+      else if (res.status === 200 && data.message === 'Sei già in lista!') setWaitlistStatus('duplicate');
+      else if (res.status === 200) setWaitlistStatus('success');
+      else setWaitlistStatus('error');
+    } catch {
+      setWaitlistStatus('error');
+    }
+  }
 
   function scrollToFeatures() {
     featuresRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -623,6 +668,51 @@ export default function WelcomePage() {
               {t.install.cta}
             </Link>
             <p className="text-[#95ad9a] text-sm">{t.install.note}</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── WAITLIST ── */}
+      <section className="px-6 py-20 bg-[#f6f3ee]">
+        <div
+          ref={waitlistReveal.ref}
+          style={{
+            opacity: waitlistReveal.visible ? 1 : 0,
+            transform: waitlistReveal.visible ? 'translateY(0)' : 'translateY(28px)',
+            transition: 'opacity 0.7s ease, transform 0.7s ease',
+          }}
+        >
+          <div className="max-w-lg mx-auto text-center">
+            <p className="text-xs uppercase tracking-[0.25em] text-[#4e6073] mb-3 font-semibold">{t.waitlist.label}</p>
+            <h2 className="font-[family-name:var(--font-headline)] text-4xl font-light text-[#162b1d] mb-4">{t.waitlist.title}</h2>
+            <p className="text-[#4e6073] text-base leading-relaxed mb-8">{t.waitlist.sub}</p>
+
+            {waitlistStatus === 'success' || waitlistStatus === 'duplicate' ? (
+              <p className="text-[#2c4132] font-semibold text-base bg-[#d0e9d4]/60 rounded-2xl px-6 py-4">
+                {waitlistStatus === 'duplicate' ? t.waitlist.duplicate : t.waitlist.success}
+              </p>
+            ) : (
+              <form onSubmit={handleWaitlist} className="flex flex-col sm:flex-row gap-3">
+                <input
+                  type="email"
+                  required
+                  value={waitlistEmail}
+                  onChange={e => setWaitlistEmail(e.target.value)}
+                  placeholder={t.waitlist.placeholder}
+                  className="flex-1 px-5 py-3.5 rounded-full border-2 border-[#162b1d]/15 bg-white text-[#162b1d] placeholder-[#4e6073]/60 focus:outline-none focus:border-[#162b1d]/40 text-sm"
+                />
+                <button
+                  type="submit"
+                  disabled={waitlistStatus === 'loading'}
+                  className="px-7 py-3.5 bg-[#162b1d] text-white rounded-full font-semibold text-sm hover:bg-[#2c4132] transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap"
+                >
+                  {waitlistStatus === 'loading' ? t.waitlist.loading : t.waitlist.cta}
+                </button>
+              </form>
+            )}
+            {waitlistStatus === 'error' && (
+              <p className="text-red-600 text-sm mt-3">{t.waitlist.error}</p>
+            )}
           </div>
         </div>
       </section>
