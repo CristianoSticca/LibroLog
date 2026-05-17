@@ -47,3 +47,4 @@ yarn-error.log*
 /public/swe-worker-*.js
 /public/swe-worker-*.js.map
 next-env.d.ts
+.claude/
