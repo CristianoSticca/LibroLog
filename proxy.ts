@@ -27,8 +27,9 @@ export async function proxy(request: NextRequest) {
   const isLoginPage = request.nextUrl.pathname === '/login';
   const isWelcomePage = request.nextUrl.pathname === '/welcome';
   const isAuthCallback = request.nextUrl.pathname.startsWith('/auth/');
+  const isPublicApi = request.nextUrl.pathname.startsWith('/api/waitlist');
 
-  if (!user && !isLoginPage && !isWelcomePage && !isAuthCallback) {
+  if (!user && !isLoginPage && !isWelcomePage && !isAuthCallback && !isPublicApi) {
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = '/welcome';
     return NextResponse.redirect(redirectUrl);
