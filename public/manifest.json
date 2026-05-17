@@ -7,6 +7,15 @@
   "background_color": "#fcf9f4",
   "theme_color": "#162b1d",
   "orientation": "portrait",
+  "screenshots": [
+    {
+      "src": "/LibroLog-screenshot.png",
+      "sizes": "1606x1340",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "LibroLog - Il tuo diario di lettura"
+    }
+  ],
   "icons": [
     {
       "src": "/apple-touch-icon.png",
