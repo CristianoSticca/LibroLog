@@ -692,7 +692,7 @@ export default function WelcomePage() {
                 {waitlistStatus === 'duplicate' ? t.waitlist.duplicate : t.waitlist.success}
               </p>
             ) : (
-              <form onSubmit={handleWaitlist} className="flex flex-col sm:flex-row gap-3">
+              <form onSubmit={handleWaitlist} action="/api/waitlist" method="POST" className="flex flex-col sm:flex-row gap-3">
                 <input
                   type="email"
                   required
