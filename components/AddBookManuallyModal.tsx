@@ -200,7 +200,7 @@ export default function AddBookManuallyModal({ initialIsbn = '', onClose }: Prop
       </div>
 
       {/* Footer con bottoni azione */}
-      <div className="px-4 pb-8 pt-3 border-t border-[#ebe8e3] dark:border-[#2c2c28] space-y-2 max-w-lg mx-auto w-full">
+      <div className="px-4 pt-3 pb-[max(2rem,env(safe-area-inset-bottom))] border-t border-[#ebe8e3] dark:border-[#2c2c28] space-y-2 max-w-lg mx-auto w-full flex-shrink-0">
         <button
           onClick={() => handleSubmit('reading')}
           disabled={!isValid || saving}
@@ -215,7 +215,7 @@ export default function AddBookManuallyModal({ initialIsbn = '', onClose }: Prop
           className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#cfe2f9] text-[#526478] rounded-full font-semibold disabled:opacity-40 transition-all active:scale-95"
         >
           <span className="material-symbols-outlined text-sm">bookmark_add</span>
-          {saving ? 'Aggiungendo...' : 'Da leggere'}
+          {saving ? 'Aggiungendo...' : 'Aggiungi in libreria'}
         </button>
       </div>
     </div>
