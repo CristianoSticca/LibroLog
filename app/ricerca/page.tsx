@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useBooks } from '@/context/BooksContext';
 import { GoogleBooksVolume } from '@/lib/types';
 import IsbnScanner from '@/components/IsbnScanner';
+import AddBookManuallyModal from '@/components/AddBookManuallyModal';
 import type { BestsellerBook, BestsellerCategory } from '@/app/api/bestsellers/route';
 
 function getCover(vol: GoogleBooksVolume): string {
@@ -25,6 +26,7 @@ export default function Ricerca() {
   const [searched, setSearched] = useState(false);
   const [adding, setAdding] = useState<string | null>(null);
   const [scannerOpen, setScannerOpen] = useState(false);
+  const [manualModalOpen, setManualModalOpen] = useState(false);
 
   const [categories, setCategories] = useState<BestsellerCategory[] | null>(null);
   const [activeCategory, setActiveCategory] = useState(0);
@@ -290,6 +292,12 @@ export default function Ricerca() {
       {scannerOpen && (
         <IsbnScanner onScan={handleScan} onClose={() => setScannerOpen(false)} />
       )}
+      {manualModalOpen && (
+        <AddBookManuallyModal
+          initialIsbn={/^\d{10,13}$/.test(query.trim()) ? query.trim() : ''}
+          onClose={() => setManualModalOpen(false)}
+        />
+      )}
 
       <header className="fixed top-0 w-full px-4 py-3 bg-[#fcf9f4]/80 dark:bg-[#121210]/80 backdrop-blur-md z-50">
         <div className="relative">
@@ -322,6 +330,13 @@ export default function Ricerca() {
                 <h2 className="font-serif text-xl text-[#162b1d] dark:text-[#b4cdb8]">Classifiche</h2>
                 <span className="text-xs text-[#74777d]">La Feltrinelli</span>
               </div>
+              <button
+                onClick={() => setManualModalOpen(true)}
+                className="flex items-center gap-1 text-xs text-[#74777d] hover:text-[#162b1d] dark:hover:text-[#b4cdb8] transition-colors"
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>add</span>
+                Aggiungi manualmente
+              </button>
               <div className="flex gap-1 bg-[#ebe8e3] dark:bg-[#2c2c28] rounded-full p-0.5">
                 <button
                   onClick={() => { setPeriod('week'); setActiveCategory(0); }}
@@ -393,6 +408,13 @@ export default function Ricerca() {
             <div className="text-center py-20">
               <span className="material-symbols-outlined text-5xl text-[#c4c6cd] mb-4 block">search_off</span>
               <p className="text-[#43474c]">Nessun risultato per &ldquo;{query}&rdquo;</p>
+              <button
+                onClick={() => setManualModalOpen(true)}
+                className="mt-4 flex items-center gap-2 px-5 py-2.5 bg-[#162b1d] text-white rounded-full text-sm font-semibold mx-auto transition-all active:scale-95"
+              >
+                <span className="material-symbols-outlined text-sm">add</span>
+                Non trovato? Aggiungilo a mano
+              </button>
             </div>
           )}
 
