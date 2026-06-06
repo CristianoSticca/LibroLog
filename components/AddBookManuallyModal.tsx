@@ -58,9 +58,9 @@ export default function AddBookManuallyModal({ initialIsbn = '', onClose }: Prop
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-[#fcf9f4] dark:bg-[#121210]">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-[#fcf9f4] dark:bg-[#121210]">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-[#ebe8e3] dark:border-[#2c2c28]">
+      <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-3 border-b border-[#ebe8e3] dark:border-[#2c2c28] bg-[#fcf9f4] dark:bg-[#121210]">
         <h2 className="font-serif text-xl text-[#162b1d] dark:text-[#b4cdb8]">Aggiungi manualmente</h2>
         <button
           onClick={onClose}
@@ -71,7 +71,7 @@ export default function AddBookManuallyModal({ initialIsbn = '', onClose }: Prop
       </div>
 
       {/* Form */}
-      <div className="flex-1 min-h-0 overflow-y-auto px-4 py-6 space-y-4 max-w-lg mx-auto w-full">
+      <div className="px-4 py-6 space-y-4 max-w-lg mx-auto w-full">
         {/* Titolo */}
         <div>
           <label className="block text-xs font-semibold text-[#43474c] dark:text-[#95ad9a] mb-1">
@@ -200,7 +200,7 @@ export default function AddBookManuallyModal({ initialIsbn = '', onClose }: Prop
       </div>
 
       {/* Footer con bottoni azione */}
-      <div className="px-4 pt-3 pb-[max(2rem,env(safe-area-inset-bottom))] border-t border-[#ebe8e3] dark:border-[#2c2c28] space-y-2 max-w-lg mx-auto w-full flex-shrink-0">
+      <div className="sticky bottom-0 px-4 pt-3 pb-[max(2rem,env(safe-area-inset-bottom))] border-t border-[#ebe8e3] dark:border-[#2c2c28] space-y-2 max-w-lg mx-auto w-full bg-[#fcf9f4] dark:bg-[#121210]">
         <button
           onClick={() => handleSubmit('reading')}
           disabled={!isValid || saving}
