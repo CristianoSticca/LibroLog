@@ -71,7 +71,7 @@ export default function AddBookManuallyModal({ initialIsbn = '', onClose }: Prop
       </div>
 
       {/* Form */}
-      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4 max-w-lg mx-auto w-full">
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 py-6 space-y-4 max-w-lg mx-auto w-full">
         {/* Titolo */}
         <div>
           <label className="block text-xs font-semibold text-[#43474c] dark:text-[#95ad9a] mb-1">
