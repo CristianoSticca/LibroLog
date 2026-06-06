@@ -306,10 +306,17 @@ export default function Ricerca() {
             value={query}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && search()}
-            className="w-full pl-12 pr-12 py-3 bg-[#ebe8e3] dark:bg-[#2c2c28] rounded-full border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20 dark:focus:ring-[#b4cdb8]/20 text-[#1c1c19] dark:text-[#e5e2dd] placeholder:text-[#74777d] text-sm"
+            className="w-full pl-12 pr-20 py-3 bg-[#ebe8e3] dark:bg-[#2c2c28] rounded-full border-none outline-none focus:ring-2 focus:ring-[#162b1d]/20 dark:focus:ring-[#b4cdb8]/20 text-[#1c1c19] dark:text-[#e5e2dd] placeholder:text-[#74777d] text-sm"
             placeholder="Titolo, autore o ISBN..."
             autoFocus
           />
+          <button
+            onClick={() => setManualModalOpen(true)}
+            title="Aggiungi manualmente"
+            className="absolute right-10 top-1/2 -translate-y-1/2 text-[#74777d] hover:text-[#162b1d] dark:hover:text-[#b4cdb8] transition-colors"
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>edit_note</span>
+          </button>
           <button
             onClick={() => setScannerOpen(true)}
             title="Scansiona ISBN"
@@ -330,13 +337,6 @@ export default function Ricerca() {
                 <h2 className="font-serif text-xl text-[#162b1d] dark:text-[#b4cdb8]">Classifiche</h2>
                 <span className="text-xs text-[#74777d]">La Feltrinelli</span>
               </div>
-              <button
-                onClick={() => setManualModalOpen(true)}
-                className="flex items-center gap-1 text-xs text-[#74777d] hover:text-[#162b1d] dark:hover:text-[#b4cdb8] transition-colors"
-              >
-                <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>add</span>
-                Aggiungi manualmente
-              </button>
               <div className="flex gap-1 bg-[#ebe8e3] dark:bg-[#2c2c28] rounded-full p-0.5">
                 <button
                   onClick={() => { setPeriod('week'); setActiveCategory(0); }}
