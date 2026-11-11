@@ -36,10 +36,8 @@ export default function Dashboard() {
   });
 
   const totalPages = readBooks.reduce((sum, b) => sum + (b.pages || 0), 0);
-  const currentBook = reading[0];
-  const progress = currentBook && currentBook.pages > 0
-    ? Math.round((currentBook.currentPage / currentBook.pages) * 100)
-    : 0;
+  const progressOf = (b: { pages: number; currentPage: number }) =>
+    b.pages > 0 ? Math.round((b.currentPage / b.pages) * 100) : 0;
 
   return (
     <>
@@ -82,8 +80,15 @@ export default function Dashboard() {
             </Link>
           </div>
 
-          {currentBook ? (
-            <div className="bg-[#f6f3ee] rounded-2xl overflow-hidden flex gap-6 p-6">
+          {reading.length > 0 ? (
+            <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-2 -mx-6 px-6 scroll-px-6">
+              {reading.map(currentBook => {
+                const progress = progressOf(currentBook);
+                return (
+            <div
+              key={currentBook.id}
+              className={`bg-[#f6f3ee] rounded-2xl overflow-hidden flex gap-6 p-6 snap-start flex-shrink-0 ${reading.length > 1 ? 'w-[85%]' : 'w-full'}`}
+            >
               <div className="w-32 aspect-[2/3] rounded-lg shadow-lg overflow-hidden flex-shrink-0">
                 {currentBook.cover ? (
                   <img src={currentBook.cover} alt={currentBook.title} className="w-full h-full object-cover" />
@@ -115,6 +120,9 @@ export default function Dashboard() {
                   Aggiorna Pagine
                 </Link>
               </div>
+            </div>
+                );
+              })}
             </div>
           ) : (
             <div className="bg-[#f6f3ee] rounded-2xl p-10 text-center">
